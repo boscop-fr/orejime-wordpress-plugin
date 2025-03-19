@@ -1,0 +1,6 @@
+{
+    "plugins": ["./orejime"],
+    "mappings": {
+        "./composer.json": "./composer.json"
+    }
+}
