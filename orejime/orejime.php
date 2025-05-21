@@ -9,15 +9,20 @@
  * @subpackage Orejime
  */
 
-/**
- * Includes.
- */
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 require_once __DIR__ . '/admin.php';
-require_once __DIR__ . '/integrations/gutemberg.php';
+require_once __DIR__ . '/integrations/google-site-kit.php';
 require_once __DIR__ . '/integrations/matomo.php';
+require_once __DIR__ . '/integrations/monster-insights.php';
+require_once __DIR__ . '/integrations/blocks/core/embed.php';
 
 define( 'OREJIME_VERSION', 'latest' );
 define( 'OREJIME_CDN_URL', 'https://cdn.jsdelivr.net/npm/orejime' );
+define( 'OREJIME_SCRIPT_HANDLE', 'orejime-script' );
+define( 'OREJIME_STYLE_HANDLE', 'orejime-style' );
 
 /**
  * Generates a unique purpose id.
@@ -29,6 +34,25 @@ function orejime_purpose_id( $name ) {
 }
 
 /**
+ * Builds the opening tag of a wrapper template.
+ *
+ * @param string  $purpose Purpose id.
+ * @param boolean $is_contextual Whether the code is contextual.
+ */
+function orejime_purpose_code_wrapper_start( $purpose, $is_contextual = false ) {
+	return $is_contextual
+		? "<template data-purpose=\"$purpose\" data-contextual>"
+		: "<template data-purpose=\"$purpose\">";
+}
+
+/**
+ * Builds the closing tag of a wrapper template.
+ */
+function orejime_purpose_code_wrapper_end() {
+	return '</template>';
+}
+
+/**
  * Wraps HTML with a template tag handled by Orejime.
  *
  * @param string  $code HTML.
@@ -36,14 +60,10 @@ function orejime_purpose_id( $name ) {
  * @param boolean $is_contextual Whether the code is contextual.
  */
 function orejime_wrap_purpose_code( $code, $purpose, $is_contextual = false ) {
-	$attrs  = "data-purpose=\"$purpose\"";
-	$attrs .= $is_contextual ? ' data-contextual' : '';
-
-	return <<<HTML
-		<template $attrs>
-			$code
-		</template>
-HTML;
+	return orejime_purpose_code_wrapper_start(
+		$purpose,
+		$is_contextual
+	) . $code . orejime_purpose_code_wrapper_end();
 }
 
 /**
@@ -76,15 +96,29 @@ function orejime_purposes() {
 
 	if ( orejime_is_contextual_consent_enabled() ) {
 		$purposes [] = array(
-			'id'    => orejime_purpose_id( 'embeds' ),
+			'id'    => orejime_embed_core_block_purpose_id(),
 			'title' => 'Embeds',
 		);
 	}
 
 	if ( orejime_is_matomo_plugin_active() ) {
 		$purposes [] = array(
-			'id'    => orejime_purpose_id( 'matomo' ),
+			'id'    => orejime_matomo_purpose_id(),
 			'title' => 'Matomo',
+		);
+	}
+
+	if ( orejime_is_google_site_kit_plugin_active() ) {
+		$purposes [] = array(
+			'id'    => orejime_google_site_kit_purpose_id(),
+			'title' => 'Google analytics',
+		);
+	}
+
+	if ( orejime_is_monster_insights_plugin_active() ) {
+		$purposes [] = array(
+			'id'    => orejime_monster_insights_purpose_id(),
+			'title' => 'Google analytics',
 		);
 	}
 
@@ -104,7 +138,7 @@ function orejime_enqueue_scripts() {
 	);
 
 	wp_enqueue_script(
-		'orejime-script',
+		OREJIME_SCRIPT_HANDLE,
 		orejime_cdn_url( "/dist/orejime-standard-$lang.js" ),
 		array(),
 		OREJIME_VERSION,
@@ -114,13 +148,13 @@ function orejime_enqueue_scripts() {
 	);
 
 	wp_add_inline_script(
-		'orejime-script',
+		OREJIME_SCRIPT_HANDLE,
 		"window.orejimeConfig = $config;",
 		'before'
 	);
 
 	wp_enqueue_style(
-		'orejime-style',
+		OREJIME_STYLE_HANDLE,
 		orejime_cdn_url( '/dist/orejime-standard.css' ),
 		array(),
 		OREJIME_VERSION
@@ -128,3 +162,12 @@ function orejime_enqueue_scripts() {
 }
 
 add_action( 'wp_enqueue_scripts', 'orejime_enqueue_scripts' );
+
+/**
+ * Plugin activation.
+ */
+function orejime_activate() {
+	orejime_activate_matomo();
+}
+
+register_activation_hook( __FILE__, 'orejime_activate' );
