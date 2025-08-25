@@ -10,7 +10,7 @@
  * Returns a unique purpose identifier for the core embed
  * block.
  *
- *  @return string
+ * @return string
  */
 function orejime_embed_core_block_purpose_id() {
 	return orejime_purpose_id( 'core-embed' );

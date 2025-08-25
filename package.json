@@ -5,9 +5,7 @@
   "private": true,
   "scripts": {
     "start": "wp-env start",
-    "composer": "wp-env run cli composer",
-    "lint": "wp-env run wordpress vendor/bin/phpcs --standard=WordPress ./wp-content/plugins/orejime",
-    "format": "wp-env run wordpress vendor/bin/phpcbf --standard=WordPress ./wp-content/plugins/orejime"
+    "composer": "wp-env run cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin composer"
   },
   "devDependencies": {
     "@wordpress/env": "^10.20.0"

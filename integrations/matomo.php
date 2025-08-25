@@ -18,7 +18,7 @@ function orejime_is_matomo_plugin_active() {
 /**
  * Returns a unique purpose identifier for Matomo.
  *
- *  @return string
+ * @return string
  */
 function orejime_matomo_purpose_id() {
 	return orejime_purpose_id( 'matomo' );

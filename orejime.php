@@ -13,16 +13,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-require_once __DIR__ . '/admin.php';
-require_once __DIR__ . '/integrations/google-site-kit.php';
-require_once __DIR__ . '/integrations/matomo.php';
-require_once __DIR__ . '/integrations/monster-insights.php';
-require_once __DIR__ . '/integrations/blocks/core/embed.php';
-
 define( 'OREJIME_VERSION', 'latest' );
 define( 'OREJIME_CDN_URL', 'https://cdn.jsdelivr.net/npm/orejime' );
 define( 'OREJIME_SCRIPT_HANDLE', 'orejime-script' );
 define( 'OREJIME_STYLE_HANDLE', 'orejime-style' );
+
+require_once __DIR__ . '/admin/media.php';
+require_once __DIR__ . '/integrations/google-site-kit.php';
+require_once __DIR__ . '/integrations/matomo.php';
+require_once __DIR__ . '/integrations/monster-insights.php';
+require_once __DIR__ . '/integrations/blocks/core/embed.php';
 
 /**
  * Generates a unique purpose id.

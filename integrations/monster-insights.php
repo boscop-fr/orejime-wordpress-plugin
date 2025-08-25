@@ -19,7 +19,7 @@ function orejime_is_monster_insights_plugin_active() {
 /**
  * Returns a unique purpose identifier for Monster Insights.
  *
- *  @return string
+ * @return string
  */
 function orejime_monster_insights_purpose_id() {
 	return orejime_purpose_id( 'monster-insights' );

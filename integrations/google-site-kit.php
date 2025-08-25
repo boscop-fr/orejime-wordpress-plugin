@@ -19,7 +19,7 @@ function orejime_is_google_site_kit_plugin_active() {
 /**
  * Returns a unique purpose identifier for Site Kit.
  *
- *  @return string
+ * @return string
  */
 function orejime_google_site_kit_purpose_id() {
 	return orejime_purpose_id( 'google-site-kit' );
@@ -40,6 +40,7 @@ function orejime_wrap_google_site_kit_tracking_code( $tag, $handle ) {
 			);
 		}
 	} catch ( \Throwable ) {
+		//
 	}
 
 	return $tag;
