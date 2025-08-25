@@ -25,15 +25,6 @@ require_once __DIR__ . '/integrations/monster-insights.php';
 require_once __DIR__ . '/integrations/blocks/core/embed.php';
 
 /**
- * Generates a unique purpose id.
- *
- * @param string $name Purpose name.
- */
-function orejime_purpose_id( $name ) {
-	return "wp-orejime-$name";
-}
-
-/**
  * Builds the opening tag of a wrapper template.
  *
  * @param string  $purpose Purpose id.
@@ -85,55 +76,22 @@ function orejime_cdn_url( $path ) {
 	return OREJIME_CDN_URL . '@' . OREJIME_VERSION . $path;
 }
 
-/**
- * Builds the list of purposes depending on config and
- * integrations.
- *
- * @return array
- */
-function orejime_purposes() {
-	$purposes = array();
-
-	if ( orejime_is_contextual_consent_enabled() ) {
-		$purposes [] = array(
-			'id'    => orejime_embed_core_block_purpose_id(),
-			'title' => 'Embeds',
-		);
-	}
-
-	if ( orejime_is_matomo_plugin_active() ) {
-		$purposes [] = array(
-			'id'    => orejime_matomo_purpose_id(),
-			'title' => 'Matomo',
-		);
-	}
-
-	if ( orejime_is_google_site_kit_plugin_active() ) {
-		$purposes [] = array(
-			'id'    => orejime_google_site_kit_purpose_id(),
-			'title' => 'Google analytics',
-		);
-	}
-
-	if ( orejime_is_monster_insights_plugin_active() ) {
-		$purposes [] = array(
-			'id'    => orejime_monster_insights_purpose_id(),
-			'title' => 'Google analytics',
-		);
-	}
-
-	return $purposes;
-}
 
 /**
  * Enqueues Orejime's scripts.
  */
 function orejime_enqueue_scripts() {
+	$purposes = apply_filters( 'orejime_enqueue_purposes', array() );
+
+	if ( empty( $purposes ) ) {
+		return;
+	}
+
 	$lang   = substr( get_locale(), 0, 2 );
 	$config = wp_json_encode(
 		array(
 			'privacyPolicyUrl' => orejime_privacy_policy_url(),
-			'purposes'         => orejime_purposes(),
+			'purposes'         => $purposes,
 		)
 	);
 

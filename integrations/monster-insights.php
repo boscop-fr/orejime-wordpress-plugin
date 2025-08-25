@@ -7,6 +7,8 @@
  * @see https://github.com/awesomemotive/google-analytics-for-wordpress
  */
 
+define( 'OREJIME_MONSTER_INSIGHTS_PURPOSE_ID', 'wp-orejime-monster-insights' );
+
 /**
  * Tells if the Monster Insights plugin is installed and enabled.
  *
@@ -17,13 +19,23 @@ function orejime_is_monster_insights_plugin_active() {
 }
 
 /**
- * Returns a unique purpose identifier for Monster Insights.
+ * Adds relevant purposes to the list.
  *
- * @return string
+ * @param array $purposes Purposes.
+ * @return array Purposes.
  */
-function orejime_monster_insights_purpose_id() {
-	return orejime_purpose_id( 'monster-insights' );
+function orejime_enqueue_monster_insights_purposes( array $purposes ) {
+	if ( orejime_is_monster_insights_plugin_active() ) {
+		$purposes [] = array(
+			'id'    => OREJIME_MONSTER_INSIGHTS_PURPOSE_ID,
+			'title' => 'Google analytics',
+		);
+	}
+
+	return $purposes;
 }
+
+add_filter( 'orejime_enqueue_purposes', 'orejime_enqueue_monster_insights_purposes' );
 
 /**
  * Starts wrapping the tracking script.
@@ -31,7 +43,7 @@ function orejime_monster_insights_purpose_id() {
 function orejime_start_monster_insights_tracking_code() {
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo orejime_purpose_code_wrapper_start(
-		orejime_monster_insights_purpose_id()
+		OREJIME_MONSTER_INSIGHTS_PURPOSE_ID
 	);
 }
 

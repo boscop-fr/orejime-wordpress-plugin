@@ -6,15 +6,26 @@
  * @subpackage Orejime
  */
 
+define( 'OREJIME_EMBED_BLOCK_PURPOSE_ID', 'wp-orejime-embed-block' );
+
 /**
- * Returns a unique purpose identifier for the core embed
- * block.
+ * Adds relevant purposes to the list.
  *
- * @return string
+ * @param array $purposes Purposes.
+ * @return array Purposes.
  */
-function orejime_embed_core_block_purpose_id() {
-	return orejime_purpose_id( 'core-embed' );
+function orejime_enqueue_embed_block_purposes( array $purposes ) {
+	if ( orejime_is_contextual_consent_enabled() ) {
+		$purposes [] = array(
+			'id'    => OREJIME_EMBED_BLOCK_PURPOSE_ID,
+			'title' => 'Embeds',
+		);
+	}
+
+	return $purposes;
 }
+
+add_filter( 'orejime_enqueue_purposes', 'orejime_enqueue_embed_block_purposes' );
 
 /**
  * Wraps embed blocks within a template tag for Orejime to
@@ -32,7 +43,7 @@ function orejime_render_embed_block( $content, $block ) {
 		return $content;
 	}
 
-	return orejime_wrap_purpose_code( $content, orejime_embed_core_block_purpose_id(), true );
+	return orejime_wrap_purpose_code( $content, OREJIME_EMBED_BLOCK_PURPOSE_ID, true );
 }
 
 add_filter( 'render_block', 'orejime_render_embed_block', 10, 2 );
