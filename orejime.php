@@ -24,6 +24,10 @@ require_once __DIR__ . '/integrations/google-site-kit.php';
 require_once __DIR__ . '/integrations/matomo.php';
 require_once __DIR__ . '/integrations/monster-insights.php';
 require_once __DIR__ . '/integrations/blocks/core/embed.php';
+require_once __DIR__ . '/integrations/class-orejime-integration.php';
+require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit.php';
+
+$_orejime_integrations = array();
 
 /**
  * Builds the opening tag of a wrapper template.
@@ -77,6 +81,38 @@ function orejime_cdn_url( $path ) {
 	return OREJIME_CDN_URL . '@' . OREJIME_VERSION . $path;
 }
 
+/**
+ * @todo Improve algorithm (although it is good enough for
+ * such a small amount of items).
+ */
+function orejime_purposes_tree( array $purposes ) {
+
+	$roots = array_values(
+		array_filter(
+			$purposes,
+			function ( $purpose ) {
+				return empty( $purpose['parent_id'] );
+			}
+		)
+	);
+
+	foreach ( $roots as &$root ) {
+		$children = array_values(
+			array_filter(
+				$purposes,
+				function ( $purpose ) use ( $root ) {
+					return isset( $purpose['parent_id'] ) && $purpose['parent_id'] === $root['id'];
+				}
+			)
+		);
+
+		if ( $children ) {
+			$root['purposes'] = $children;
+		}
+	}
+
+	return $roots;
+}
 
 /**
  * Enqueues Orejime's scripts.
@@ -92,7 +128,7 @@ function orejime_enqueue_scripts() {
 	$config = wp_json_encode(
 		array(
 			'privacyPolicyUrl' => orejime_privacy_policy_url(),
-			'purposes'         => $purposes,
+			'purposes'         => orejime_purposes_tree( $purposes ),
 		)
 	);
 
@@ -130,3 +166,46 @@ function orejime_activate_plugin() {
 }
 
 register_activation_hook( __FILE__, 'orejime_activate_plugin' );
+
+/**
+ * Plugin initialization.
+ */
+function orejime_init() {
+	do_action( 'orejime_init' );
+
+	orejime_register_integration( new Orejime_Integration_Google_Site_Kit() );
+}
+
+add_action( 'init', 'orejime_init' );
+
+/**
+ *
+ */
+function orejime_register_integration( Orejime_Integration $integration ) {
+	global $_orejime_integrations;
+
+	if ( isset( $_orejime_integrations[ $integration->id ] ) ) {
+		return;
+	}
+
+	$integration->register();
+	$_orejime_integrations[ $integration->id ] = $integration;
+
+	do_action( 'orejime_registered_integration', $integration );
+}
+
+/**
+ *
+ */
+function orejime_get_registered_integrations() {
+	global $_orejime_integrations;
+	return $_orejime_integrations;
+}
+
+/**
+ *
+ */
+function orejime_get_registered_integration( $id ) {
+	global $_orejime_integrations;
+	return $_orejime_integrations[ $id ] ?? null;
+}
