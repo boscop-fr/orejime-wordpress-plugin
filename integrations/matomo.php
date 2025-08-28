@@ -18,6 +18,23 @@ function orejime_is_matomo_plugin_active() {
 }
 
 /**
+ * Regenerates the tracking code so we can tune it.
+ */
+function orejime_activate_matomo() {
+	if ( ! orejime_is_matomo_plugin_active() ) {
+		return;
+	}
+
+	try {
+		$settings = new \WpMatomo\Settings();
+		$settings->apply_tracking_related_changes( array() );
+	} catch ( \Throwable ) {
+	}
+}
+
+add_action( 'orejime_activate_plugin', 'orejime_activate_matomo' );
+
+/**
  * Adds relevant purposes to the list.
  *
  * @param array $purposes Purposes.
@@ -35,21 +52,6 @@ function orejime_enqueue_matomo_purposes( array $purposes ) {
 }
 
 add_filter( 'orejime_enqueue_purposes', 'orejime_enqueue_matomo_purposes' );
-
-/**
- * Regenerates the tracking code so we can tune it.
- */
-function orejime_activate_matomo() {
-	if ( ! orejime_is_matomo_plugin_active() ) {
-		return;
-	}
-
-	try {
-		$settings = new \WpMatomo\Settings();
-		$settings->apply_tracking_related_changes( array() );
-	} catch ( \Throwable ) {
-	}
-}
 
 /**
  * Updates the tracking script so Orejime takes control over

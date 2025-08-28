@@ -124,8 +124,8 @@ add_action( 'wp_enqueue_scripts', 'orejime_enqueue_scripts' );
 /**
  * Plugin activation.
  */
-function orejime_activate() {
-	orejime_activate_matomo();
+function orejime_activate_plugin() {
+	do_action( 'orejime_activate_plugin' );
 }
 
-register_activation_hook( __FILE__, 'orejime_activate' );
+register_activation_hook( __FILE__, 'orejime_activate_plugin' );
