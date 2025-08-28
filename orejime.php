@@ -19,6 +19,7 @@ define( 'OREJIME_SCRIPT_HANDLE', 'orejime-script' );
 define( 'OREJIME_STYLE_HANDLE', 'orejime-style' );
 
 require_once __DIR__ . '/admin/media.php';
+require_once __DIR__ . '/admin/taxonomies.php';
 require_once __DIR__ . '/integrations/google-site-kit.php';
 require_once __DIR__ . '/integrations/matomo.php';
 require_once __DIR__ . '/integrations/monster-insights.php';
