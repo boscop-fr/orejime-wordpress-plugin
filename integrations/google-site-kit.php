@@ -44,14 +44,15 @@ add_filter( 'orejime_enqueue_purposes', 'orejime_enqueue_google_site_kit_purpose
  * @param string $handle Handle.
  */
 function orejime_wrap_google_site_kit_tracking_code( $tag, $handle ) {
-	try {
-		if ( \Google\Site_Kit\Core\Tags\GTag::HANDLE === $handle ) {
-			return orejime_wrap_purpose_code(
-				$tag,
-				OREJIME_GOOGLE_SITE_KIT_PURPOSE_ID
-			);
-		}
-	} catch ( \Throwable ) {
+	if ( ! class_exists( '\Google\Site_Kit\Core\Tags\GTag' ) ) {
+		return $tag;
+	}
+
+	if ( \Google\Site_Kit\Core\Tags\GTag::HANDLE === $handle) {
+		return orejime_wrap_purpose_code(
+			$tag,
+			OREJIME_GOOGLE_SITE_KIT_PURPOSE_ID
+		);
 	}
 
 	return $tag;

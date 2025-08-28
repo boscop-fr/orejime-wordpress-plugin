@@ -25,11 +25,12 @@ function orejime_activate_matomo() {
 		return;
 	}
 
-	try {
-		$settings = new \WpMatomo\Settings();
-		$settings->apply_tracking_related_changes( array() );
-	} catch ( \Throwable ) {
+	if ( ! class_exists( '\WpMatomo\Settings' ) ) {
+		return;
 	}
+
+	$settings = new \WpMatomo\Settings();
+	$settings->apply_tracking_related_changes( array() );
 }
 
 add_action( 'orejime_activate_plugin', 'orejime_activate_matomo' );
