@@ -4,4 +4,9 @@
     <exclude-pattern type="relative">^node_modules/*</exclude-pattern>
     <exclude-pattern type="relative">^vendor/*</exclude-pattern>
     <rule ref="WordPress"/>
+    <rule ref="Squiz.Commenting.FunctionComment">
+        <properties>
+            <property name="skipIfInheritdoc" value="true" />
+        </properties>
+    </rule>
 </ruleset>

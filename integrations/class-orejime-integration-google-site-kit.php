@@ -1,24 +1,32 @@
 <?php
+/**
+ * Google Site Kit integration.
+ *
+ * @package WordPress
+ * @subpackage Orejime
+ */
 
+/**
+ * Google Site Kit integration.
+ */
 class Orejime_Integration_Google_Site_Kit extends Orejime_Integration {
 
 	const ANALYTICS_4_MODULE_SLUG = 'analytics-4';
 
-	public string $id   = 'google-site-kit';
-	public string $name = 'Google Site Kit';
-
-	private ?WP_Term $term = null;
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public function register() {
-		$this->term = orejime_register_integration_purpose_term( $this );
-
-		add_filter( 'script_loader_tag', array( $this, 'wrap_tracking_code' ), 100, 2 );
+		add_filter( 'script_loader_tag', array( $this, 'wrap_script' ), 100, 2 );
 
 		if ( WP_DEBUG ) {
 			add_filter( 'googlesitekit_setup_gtag', array( $this, 'setup_test_tag' ), 10, 1 );
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function is_active() {
 		return $this->is_module_active( self::ANALYTICS_4_MODULE_SLUG );
 	}
@@ -38,10 +46,16 @@ class Orejime_Integration_Google_Site_Kit extends Orejime_Integration {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @todo Find a way to provide a regex to Orejime, as
+	 * cookie names are escaped if they are string.
 	 */
 	public function get_cookie_names() {
-		return array();
+		return array(
+			'_ga',
+			'_ga_.*',
+		);
 	}
 
 	/**
@@ -50,15 +64,12 @@ class Orejime_Integration_Google_Site_Kit extends Orejime_Integration {
 	 * @param string $tag HTML.
 	 * @param string $handle Handle.
 	 */
-	function wrap_tracking_code( $tag, $handle ) {
+	public function wrap_script( $tag, $handle ) {
 		if (
-			$this->term
-			&& class_exists( '\Google\Site_Kit\Core\Tags\GTag' )
+			class_exists( '\Google\Site_Kit\Core\Tags\GTag' )
 			&& \Google\Site_Kit\Core\Tags\GTag::HANDLE === $handle
 		) {
-			// We're using the term id as to not disclose
-			// the actual integration name.
-			return orejime_wrap_purpose_code( $tag, $this->term->id );
+			return orejime_wrap_purpose_code( $tag, $this->purpose_id );
 		}
 
 		return $tag;
@@ -69,7 +80,7 @@ class Orejime_Integration_Google_Site_Kit extends Orejime_Integration {
 	 *
 	 * @param \Google\Site_Kit\Core\Tags\GTag $gtag GTag.
 	 */
-	function setup_test_tag( $gtag ) {
+	public function setup_test_tag( $gtag ) {
 		$gtag->add_tag( 'orejime' );
 	}
 }

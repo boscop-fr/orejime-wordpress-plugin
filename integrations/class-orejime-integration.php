@@ -1,20 +1,61 @@
 <?php
+/**
+ * Integration.
+ *
+ * @package WordPress
+ * @subpackage Orejime
+ */
 
+/**
+ * Base class for a plugin integration.
+ * This allows Orejime to hook itself to other plugins as to
+ * handle their scripts automatically.
+ */
 abstract class Orejime_Integration {
 
 	/**
 	 * Unique id.
 	 *
 	 * @var string
+	 * @readonly
 	 */
-	public string $id;
+	public string $id = 'none';
 
 	/**
 	 * Name.
 	 *
 	 * @var string
+	 * @readonly
 	 */
-	public string $name;
+	public string $name = 'None';
+
+	/**
+	 * Id of the associated purpose.
+	 *
+	 * @var int
+	 * @readonly
+	 */
+	public int $purpose_id;
+
+	/**
+	 * Initializes the integration.
+	 *
+	 * @param string $id Id.
+	 * @param string $name Name.
+	 */
+	public function __construct( $id, $name ) {
+		$this->id   = $id;
+		$this->name = $name;
+	}
+
+	/**
+	 * Sets the associated purpose.
+	 *
+	 * @param string $purpose_id Purpose id.
+	 */
+	public function set_purpose( $purpose_id ) {
+		$this->purpose_id = $purpose_id;
+	}
 
 	/**
 	 * Hooks everything up.
@@ -27,7 +68,7 @@ abstract class Orejime_Integration {
 	 * @return boolean
 	 */
 	public function is_active() {
-		return false;
+		return true;
 	}
 
 	/**

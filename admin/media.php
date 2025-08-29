@@ -36,7 +36,7 @@ function orejime_contextual_consent_setting() {
 
 			Provide contextual consent for embeds
 		</label>
-HTML;
+	HTML;
 
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo $html;
