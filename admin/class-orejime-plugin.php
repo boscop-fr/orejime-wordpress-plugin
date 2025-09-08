@@ -10,6 +10,7 @@
  */
 class Orejime_Plugin {
 
+	const MENU_SLUG     = 'orejime';
 	const CDN_URL       = 'https://cdn.jsdelivr.net/npm/orejime';
 	const VERSION       = 'latest';
 	const SCRIPT_HANDLE = 'orejime-script';
@@ -39,6 +40,14 @@ class Orejime_Plugin {
 
 		add_action( 'plugins_loaded', array( $this, 'register_integrations' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_menu', array( $this, 'setup_menu' ) );
+		add_filter(
+			'plugin_action_links_' . OREJIME_PLUGIN_FILE,
+			array(
+				$this,
+				'setup_action_links',
+			)
+		);
 	}
 
 	/**
@@ -133,5 +142,50 @@ class Orejime_Plugin {
 	 */
 	private function make_cdn_url( $path ) {
 		return self::CDN_URL . '@' . self::VERSION . $path;
+	}
+
+	/**
+	 * Adds admin menu entries.
+	 */
+	public function setup_menu() {
+		add_menu_page(
+			'Orejime',
+			'Orejime',
+			// Using an unknown capability makes the page
+			// a mere container for sub pages, while not being
+			// directly accessible.
+			// phpcs:ignore WordPress.WP.Capabilities.Unknown
+			'orejime_unknown',
+			self::MENU_SLUG,
+			null,
+			'dashicons-privacy'
+		);
+
+		add_submenu_page(
+			self::MENU_SLUG,
+			__( 'Purposes', 'orejime' ),
+			__( 'Purposes', 'orejime' ),
+			'manage_options',
+			$this->taxonomy->get_admin_edit_page_path()
+		);
+	}
+
+	/**
+	 * Adds custom plugin actions.
+	 *
+	 * @param array $links Default links.
+	 * @return array Links.
+	 */
+	public function setup_action_links( array $links ) {
+		array_unshift(
+			$links,
+			sprintf(
+				'<a href="%s">%s</a>',
+				admin_url( $this->taxonomy->get_admin_edit_page_path(), false ),
+				__( 'Configure', 'orejime' )
+			)
+		);
+
+		return $links;
 	}
 }

@@ -18,7 +18,6 @@ class Orejime_Purpose_Taxonomy {
 	 */
 	public function register() {
 		add_action( 'init', array( $this, 'setup_taxonomy' ) );
-		add_action( 'admin_menu', array( $this, 'setup_menu' ) );
 
 		// Disables bulk actions.
 		add_filter( 'bulk_actions-edit-' . self::NAME, '__return_empty_array' );
@@ -79,18 +78,6 @@ class Orejime_Purpose_Taxonomy {
 				'single'  => true,
 				'default' => '',
 			)
-		);
-	}
-
-	/**
-	 * Adds a menu entry to configure purposes.
-	 */
-	public function setup_menu() {
-		add_menu_page(
-			'Orejime',
-			'Orejime',
-			'manage_options',
-			'edit-tags.php?taxonomy=orejime_purpose'
 		);
 	}
 
@@ -216,6 +203,15 @@ class Orejime_Purpose_Taxonomy {
 		}
 
 		// phpcs:enable WordPress.Security.NonceVerification
+	}
+
+	/**
+	 * Returns the URL path of the edit page.
+	 *
+	 * @return string Path.
+	 */
+	public function get_admin_edit_page_path() {
+		return 'edit-tags.php?taxonomy=' . self::NAME;
 	}
 
 	/**
