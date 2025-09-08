@@ -21,7 +21,16 @@ class Orejime_Integration_Matomo extends Orejime_Integration {
 	 * {@inheritDoc}
 	 */
 	public function is_active() {
-		return is_plugin_active( 'matomo/matomo.php' );
+		if ( ! class_exists( 'WpMatomo' ) ) {
+			return false;
+		}
+
+		if ( ! WpMatomo::$settings ) {
+			return false;
+		}
+
+		return WpMatomo::$settings->is_tracking_enabled()
+			&& ! WpMatomo::$settings->get_global_option( 'disable_cookies' );
 	}
 
 	/**
