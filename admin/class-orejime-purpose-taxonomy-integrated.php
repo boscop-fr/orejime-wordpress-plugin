@@ -37,8 +37,8 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 
 		add_action( 'init', array( $this, 'setup_integrations' ) );
 
-		add_filter( 'manage_edit-' . self::ID . '_columns', array( $this, 'add_integration_table_column' ) );
-		add_filter( 'manage_' . self::ID . '_custom_column', array( $this, 'fill_custom_table_column' ), 10, 3 );
+		add_filter( 'manage_edit-' . self::NAME . '_columns', array( $this, 'add_integration_table_column' ) );
+		add_filter( 'manage_' . self::NAME . '_custom_column', array( $this, 'fill_custom_table_column' ), 10, 3 );
 		add_filter( 'user_has_cap', array( $this, 'user_capabilities' ), 10, 4 );
 
 		add_filter( 'get_terms_args', array( $this, 'exclude_inactive_terms' ), 10, 2 );
@@ -83,7 +83,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	private function create_integration_term( Orejime_Integration $integration ) {
 		$term = wp_insert_term(
 			$integration->name,
-			self::ID,
+			self::NAME,
 			array(
 				'slug' => $this->term_slug( $integration->id ),
 			)
@@ -107,7 +107,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 		$term = get_term_by(
 			'slug',
 			$this->term_slug( $integration->id ),
-			self::ID
+			self::NAME
 		);
 
 		if ( ! $term ) {
@@ -155,7 +155,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	 * @return array Query.
 	 */
 	public function exclude_inactive_terms( $query, $taxonomies ) {
-		if ( ! in_array( self::ID, $taxonomies, true ) ) {
+		if ( ! in_array( self::NAME, $taxonomies, true ) ) {
 			return $query;
 		}
 

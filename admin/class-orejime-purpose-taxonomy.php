@@ -10,7 +10,7 @@
  */
 class Orejime_Purpose_Taxonomy {
 
-	const ID            = 'orejime_purpose';
+	const NAME          = 'orejime_purpose';
 	const COOKIES_FIELD = 'orejime_cookies';
 
 	/**
@@ -21,20 +21,20 @@ class Orejime_Purpose_Taxonomy {
 		add_action( 'admin_menu', array( $this, 'setup_menu' ) );
 
 		// Disables bulk actions.
-		add_filter( 'bulk_actions-edit-' . self::ID, '__return_empty_array' );
+		add_filter( 'bulk_actions-edit-' . self::NAME, '__return_empty_array' );
 
 		// Disables pagination. As there will always be a
 		// reasonable amount of purposes, we might as well
 		// display them all.
-		add_filter( 'edit_' . self::ID . '_per_page', fn () => PHP_INT_MAX );
-		add_filter( 'manage_edit-' . self::ID . '_columns', array( $this, 'hide_table_columns' ) );
+		add_filter( 'edit_' . self::NAME . '_per_page', fn () => PHP_INT_MAX );
+		add_filter( 'manage_edit-' . self::NAME . '_columns', array( $this, 'hide_table_columns' ) );
 
-		add_action( self::ID . '_pre_add_form', array( $this, 'hide_term_slug_field' ) );
-		add_action( self::ID . '_pre_edit_form', array( $this, 'hide_term_slug_field' ) );
-		add_filter( self::ID . '_add_form_fields', array( $this, 'add_term_form_fields' ) );
-		add_filter( self::ID . '_edit_form_fields', array( $this, 'edit_term_form_fields' ), 10, 2 );
-		add_action( 'created_' . self::ID, array( $this, 'save_custom_fields' ) );
-		add_action( 'edited_' . self::ID, array( $this, 'save_custom_fields' ) );
+		add_action( self::NAME . '_pre_add_form', array( $this, 'hide_term_slug_field' ) );
+		add_action( self::NAME . '_pre_edit_form', array( $this, 'hide_term_slug_field' ) );
+		add_filter( self::NAME . '_add_form_fields', array( $this, 'add_term_form_fields' ) );
+		add_filter( self::NAME . '_edit_form_fields', array( $this, 'edit_term_form_fields' ), 10, 2 );
+		add_action( 'created_' . self::NAME, array( $this, 'save_custom_fields' ) );
+		add_action( 'edited_' . self::NAME, array( $this, 'save_custom_fields' ) );
 	}
 
 	/**
@@ -42,7 +42,7 @@ class Orejime_Purpose_Taxonomy {
 	 */
 	public function setup_taxonomy() {
 		register_taxonomy(
-			self::ID,
+			self::NAME,
 			array(),
 			array(
 				'public'       => false,
@@ -72,7 +72,7 @@ class Orejime_Purpose_Taxonomy {
 		);
 
 		register_term_meta(
-			self::ID,
+			self::NAME,
 			self::COOKIES_FIELD,
 			array(
 				'type'    => 'string',
@@ -226,7 +226,7 @@ class Orejime_Purpose_Taxonomy {
 	public function get_purpose_tree() {
 		$terms = get_terms(
 			array(
-				'taxonomy'     => self::ID,
+				'taxonomy'     => self::NAME,
 				'hide_empty'   => false,
 				'hierarchical' => true,
 			)
