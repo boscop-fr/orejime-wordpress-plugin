@@ -2,8 +2,7 @@
 /**
  * Purpose taxonomy with integrations.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**

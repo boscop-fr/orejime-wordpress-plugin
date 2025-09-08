@@ -2,8 +2,7 @@
 /**
  * Embed blocks integration.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**

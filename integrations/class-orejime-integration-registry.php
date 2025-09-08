@@ -2,8 +2,7 @@
 /**
  * Integration registry.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**

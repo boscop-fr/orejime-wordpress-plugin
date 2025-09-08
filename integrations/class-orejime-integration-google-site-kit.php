@@ -2,8 +2,7 @@
 /**
  * Google Site Kit integration.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**

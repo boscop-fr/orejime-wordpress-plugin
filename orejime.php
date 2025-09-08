@@ -1,12 +1,12 @@
 <?php
 /**
  * Plugin Name: Orejime
- * Text Domain: orejime
+ * Description: Lighweight and accessible consent manager.
  * Author: Boscop
  * Author URI: https://boscop.fr
+ * Text Domain: orejime
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

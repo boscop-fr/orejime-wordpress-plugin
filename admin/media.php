@@ -2,8 +2,7 @@
 /**
  * Orejime administration.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 define( 'OREJIME_SETTING_CONTEXTUAL_CONSENT', 'orejime_contextual_consent' );

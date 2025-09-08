@@ -2,8 +2,7 @@
 /**
  * Monster Insights integration.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**

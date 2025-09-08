@@ -2,8 +2,7 @@
 /**
  * Matomo integration.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**

@@ -2,8 +2,7 @@
 /**
  * Orejime plugin.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**

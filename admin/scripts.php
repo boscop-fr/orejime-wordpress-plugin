@@ -2,8 +2,7 @@
 /**
  * Script utilities.
  *
- * @package WordPress
- * @subpackage Orejime
+ * @package Orejime
  */
 
 /**
