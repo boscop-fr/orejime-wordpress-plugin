@@ -10,12 +10,14 @@
  */
 class Orejime_Integration_Monster_Insights extends Orejime_Integration {
 
+	use Orejime_Hookable;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		add_filter( 'monsterinsights_tracking_before', array( $this, 'open_tracking_code' ), 10 );
-		add_filter( 'monsterinsights_tracking_after', array( $this, 'close_tracking_code' ), 10 );
+		add_filter( 'monsterinsights_tracking_before', $this->get_callback( 'open_tracking_code' ), 10 );
+		add_filter( 'monsterinsights_tracking_after', $this->get_callback( 'close_tracking_code' ), 10 );
 	}
 
 	/**
@@ -35,7 +37,7 @@ class Orejime_Integration_Monster_Insights extends Orejime_Integration {
 	/**
 	 * Starts wrapping the tracking script.
 	 */
-	public function open_tracking_code() {
+	private function open_tracking_code() {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo orejime_purpose_code_wrapper_start( $this->purpose_id );
 	}
@@ -43,7 +45,7 @@ class Orejime_Integration_Monster_Insights extends Orejime_Integration {
 	/**
 	 * Finishes wrapping the tracking script.
 	 */
-	public function close_tracking_code() {
+	private function close_tracking_code() {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo orejime_purpose_code_wrapper_end();
 	}

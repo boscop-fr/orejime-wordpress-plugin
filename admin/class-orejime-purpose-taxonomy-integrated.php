@@ -10,6 +10,8 @@
  */
 class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 
+	use Orejime_Hookable;
+
 	const INTEGRATION_FIELD  = 'orejime_integration_id';
 	const INTEGRATION_PREFIX = 'orejime_integration_';
 
@@ -35,13 +37,13 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	public function register() {
 		parent::register();
 
-		add_action( 'init', array( $this, 'setup_integrations' ) );
+		add_action( 'init', $this->get_callback( 'setup_integrations' ) );
 
-		add_filter( 'manage_edit-' . self::NAME . '_columns', array( $this, 'add_integration_table_column' ) );
-		add_filter( 'manage_' . self::NAME . '_custom_column', array( $this, 'fill_custom_table_column' ), 10, 3 );
-		add_filter( 'user_has_cap', array( $this, 'user_capabilities' ), 10, 4 );
+		add_filter( 'manage_edit-' . self::NAME . '_columns', $this->get_callback( 'add_integration_table_column' ) );
+		add_filter( 'manage_' . self::NAME . '_custom_column', $this->get_callback( 'fill_custom_table_column' ), 10, 3 );
+		add_filter( 'user_has_cap', $this->get_callback( 'user_capabilities' ), 10, 4 );
 
-		add_filter( 'get_terms_args', array( $this, 'exclude_inactive_terms' ), 10, 2 );
+		add_filter( 'get_terms_args', $this->get_callback( 'exclude_inactive_terms' ), 10, 2 );
 	}
 
 	/**
@@ -50,7 +52,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	 * @todo Properly handle errors and find a way to report
 	 * them to within the interface.
 	 */
-	public function setup_integrations() {
+	private function setup_integrations() {
 		foreach ( $this->integrations->get_all() as $integration ) {
 			try {
 				$id = $this->register_integration_term( $integration );
@@ -154,7 +156,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	 * @param array $taxonomies Taxonomies.
 	 * @return array Query.
 	 */
-	public function exclude_inactive_terms( $query, $taxonomies ) {
+	private function exclude_inactive_terms( $query, $taxonomies ) {
 		if ( ! in_array( self::NAME, $taxonomies, true ) ) {
 			return $query;
 		}
@@ -183,7 +185,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	 * @param array $columns Columns.
 	 * @return array Columns.
 	 */
-	public function add_integration_table_column( $columns ) {
+	private function add_integration_table_column( $columns ) {
 		$columns[ self::INTEGRATION_FIELD ] = __( 'Plugin integration', 'orejime' );
 
 		return $columns;
@@ -197,7 +199,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	 * @param int    $term_id Term id.
 	 * @return string Outputs.
 	 */
-	public function fill_custom_table_column( $output, $column_name, $term_id ) {
+	private function fill_custom_table_column( $output, $column_name, $term_id ) {
 		switch ( $column_name ) {
 			case self::INTEGRATION_FIELD:
 				$integration = $this->get_term_integration( $term_id );
@@ -217,7 +219,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	 * @param array $args Additional args.
 	 * @return array Updated capabilities.
 	 */
-	public function user_capabilities( array $all_caps, array $required_caps, array $args ) {
+	private function user_capabilities( array $all_caps, array $required_caps, array $args ) {
 		if ( count( $args ) < 3 ) {
 			return $all_caps;
 		}

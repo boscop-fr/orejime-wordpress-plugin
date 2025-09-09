@@ -10,11 +10,13 @@
  */
 class Orejime_Integration_Matomo extends Orejime_Integration {
 
+	use Orejime_Hookable;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		add_filter( 'matomo_tracking_code_script', array( $this, 'wrap_script' ), 10, 2 );
+		add_filter( 'matomo_tracking_code_script', $this->get_callback( 'wrap_script' ), 10, 2 );
 	}
 
 	/**
@@ -45,7 +47,7 @@ class Orejime_Integration_Matomo extends Orejime_Integration {
 	 *
 	 * @param string $script HTML.
 	 */
-	public function wrap_script( $script ) {
+	private function wrap_script( $script ) {
 		return orejime_wrap_purpose_code( $script, $this->purpose_id );
 	}
 }

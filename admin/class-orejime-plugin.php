@@ -10,6 +10,8 @@
  */
 final class Orejime_Plugin {
 
+	use Orejime_Hookable;
+
 	const MENU_SLUG     = 'orejime';
 	const CDN_URL       = 'https://cdn.jsdelivr.net/npm/orejime';
 	const VERSION       = 'latest';
@@ -49,22 +51,19 @@ final class Orejime_Plugin {
 		$this->taxonomy     = new Orejime_Purpose_Taxonomy_Integrated( $this->integrations );
 		$this->taxonomy->register();
 
-		add_action( 'plugins_loaded', array( $this, 'register_integrations' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'admin_menu', array( $this, 'setup_menu' ) );
+		add_action( 'plugins_loaded', $this->get_callback( 'register_integrations' ) );
+		add_action( 'wp_enqueue_scripts', $this->get_callback( 'enqueue_scripts' ) );
+		add_action( 'admin_menu', $this->get_callback( 'setup_menu' ) );
 		add_filter(
 			'plugin_action_links_' . OREJIME_PLUGIN_FILE,
-			array(
-				$this,
-				'setup_action_links',
-			)
+			$this->get_callback( 'setup_action_links' )
 		);
 	}
 
 	/**
 	 * Registers built-in integrations.
 	 */
-	public function register_integrations() {
+	private function register_integrations() {
 		$this->integrations->register(
 			new Orejime_Integration_Core_Embed_Block(
 				'core-embed-block',
@@ -97,7 +96,7 @@ final class Orejime_Plugin {
 	/**
 	 * Enqueues Orejime's scripts and config.
 	 */
-	public function enqueue_scripts() {
+	private function enqueue_scripts() {
 		$purposes = $this->taxonomy->get_purpose_tree();
 
 		if ( empty( $purposes ) ) {
@@ -158,7 +157,7 @@ final class Orejime_Plugin {
 	/**
 	 * Adds admin menu entries.
 	 */
-	public function setup_menu() {
+	private function setup_menu() {
 		add_menu_page(
 			'Orejime',
 			'Orejime',
@@ -187,7 +186,7 @@ final class Orejime_Plugin {
 	 * @param array $links Default links.
 	 * @return array Links.
 	 */
-	public function setup_action_links( array $links ) {
+	private function setup_action_links( array $links ) {
 		array_unshift(
 			$links,
 			sprintf(

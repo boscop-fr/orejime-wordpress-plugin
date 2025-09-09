@@ -10,6 +10,8 @@
  */
 class Orejime_Purpose_Taxonomy {
 
+	use Orejime_Hookable;
+
 	const NAME          = 'orejime_purpose';
 	const COOKIES_FIELD = 'orejime_cookies';
 
@@ -17,7 +19,7 @@ class Orejime_Purpose_Taxonomy {
 	 * Hooks everything up.
 	 */
 	public function register() {
-		add_action( 'init', array( $this, 'setup_taxonomy' ) );
+		add_action( 'init', $this->get_callback( 'setup_taxonomy' ) );
 
 		// Disables bulk actions.
 		add_filter( 'bulk_actions-edit-' . self::NAME, '__return_empty_array' );
@@ -26,20 +28,20 @@ class Orejime_Purpose_Taxonomy {
 		// reasonable amount of purposes, we might as well
 		// display them all.
 		add_filter( 'edit_' . self::NAME . '_per_page', fn () => PHP_INT_MAX );
-		add_filter( 'manage_edit-' . self::NAME . '_columns', array( $this, 'hide_table_columns' ) );
+		add_filter( 'manage_edit-' . self::NAME . '_columns', $this->get_callback( 'hide_table_columns' ) );
 
-		add_action( self::NAME . '_pre_add_form', array( $this, 'hide_term_slug_field' ) );
-		add_action( self::NAME . '_pre_edit_form', array( $this, 'hide_term_slug_field' ) );
-		add_filter( self::NAME . '_add_form_fields', array( $this, 'add_term_form_fields' ) );
-		add_filter( self::NAME . '_edit_form_fields', array( $this, 'edit_term_form_fields' ), 10, 2 );
-		add_action( 'created_' . self::NAME, array( $this, 'save_custom_fields' ) );
-		add_action( 'edited_' . self::NAME, array( $this, 'save_custom_fields' ) );
+		add_action( self::NAME . '_pre_add_form', $this->get_callback( 'hide_term_slug_field' ) );
+		add_action( self::NAME . '_pre_edit_form', $this->get_callback( 'hide_term_slug_field' ) );
+		add_filter( self::NAME . '_add_form_fields', $this->get_callback( 'add_term_form_fields' ) );
+		add_filter( self::NAME . '_edit_form_fields', $this->get_callback( 'edit_term_form_fields' ), 10, 2 );
+		add_action( 'created_' . self::NAME, $this->get_callback( 'save_custom_fields' ) );
+		add_action( 'edited_' . self::NAME, $this->get_callback( 'save_custom_fields' ) );
 	}
 
 	/**
 	 * Registers a custom taxonomy to configure purposes.
 	 */
-	public function setup_taxonomy() {
+	private function setup_taxonomy() {
 		register_taxonomy(
 			self::NAME,
 			array(),
@@ -87,7 +89,7 @@ class Orejime_Purpose_Taxonomy {
 	 * @param array $columns Columns.
 	 * @return array Columns.
 	 */
-	public function hide_table_columns( $columns ) {
+	private function hide_table_columns( $columns ) {
 		unset( $columns['cb'] );
 		unset( $columns['slug'] );
 		unset( $columns['posts'] );
@@ -98,7 +100,7 @@ class Orejime_Purpose_Taxonomy {
 	/**
 	 * Hides the slug field as it is not relevant for purposes.
 	 */
-	public function hide_term_slug_field() {
+	private function hide_term_slug_field() {
 		$html = <<<'HTML'
 			<style>
 				.term-slug-wrap,
@@ -117,7 +119,7 @@ class Orejime_Purpose_Taxonomy {
 	 *
 	 * @param string $taxonomy_slug Taxonomy slug.
 	 */
-	public function add_term_form_fields( $taxonomy_slug ) {
+	private function add_term_form_fields( $taxonomy_slug ) {
 		$taxonomy    = get_taxonomy( $taxonomy_slug );
 		$name        = self::COOKIES_FIELD;
 		$label       = __( 'Cookies', 'orejime' );
@@ -151,7 +153,7 @@ class Orejime_Purpose_Taxonomy {
 	 * @param WP_Term $term Term.
 	 * @param string  $taxonomy_slug Taxonomy slug.
 	 */
-	public function edit_term_form_fields( WP_Term $term, $taxonomy_slug ) {
+	private function edit_term_form_fields( WP_Term $term, $taxonomy_slug ) {
 		$taxonomy    = get_taxonomy( $taxonomy_slug );
 		$name        = self::COOKIES_FIELD;
 		$value       = esc_attr( get_term_meta( $term->term_id, self::COOKIES_FIELD, true ) );
@@ -191,7 +193,7 @@ class Orejime_Purpose_Taxonomy {
 	 *
 	 * @param string $term_id Term id.
 	 */
-	public function save_custom_fields( $term_id ) {
+	private function save_custom_fields( $term_id ) {
 		// phpcs:disable WordPress.Security.NonceVerification
 
 		if ( isset( $_POST[ self::COOKIES_FIELD ] ) ) {

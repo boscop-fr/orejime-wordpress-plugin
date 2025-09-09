@@ -17,6 +17,7 @@ if ( ! defined( 'OREJIME_PLUGIN_FILE' ) ) {
 	define( 'OREJIME_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 }
 
+require_once __DIR__ . '/includes/trait-orejime-hookable.php';
 require_once __DIR__ . '/admin/class-orejime-plugin.php';
 require_once __DIR__ . '/admin/class-orejime-purpose-taxonomy.php';
 require_once __DIR__ . '/admin/class-orejime-purpose-taxonomy-integrated.php';

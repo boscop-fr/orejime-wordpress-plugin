@@ -10,11 +10,13 @@
  */
 class Orejime_Integration_Core_Embed_Block extends Orejime_Integration {
 
+	use Orejime_Hookable;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		add_filter( 'render_block', array( $this, 'wrap_block' ), 10, 2 );
+		add_filter( 'render_block', $this->get_callback( 'wrap_block' ), 10, 2 );
 	}
 
 	/**
@@ -31,7 +33,7 @@ class Orejime_Integration_Core_Embed_Block extends Orejime_Integration {
 	 * @param string $content Content.
 	 * @param array  $block Block.
 	 */
-	public function wrap_block( $content, $block ) {
+	private function wrap_block( $content, $block ) {
 		if ( 'core/embed' !== $block['blockName'] ) {
 			return $content;
 		}

@@ -10,16 +10,18 @@
  */
 class Orejime_Integration_Google_Site_Kit extends Orejime_Integration {
 
+	use Orejime_Hookable;
+
 	const ANALYTICS_4_MODULE_SLUG = 'analytics-4';
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		add_filter( 'script_loader_tag', array( $this, 'wrap_script' ), 100, 2 );
+		add_filter( 'script_loader_tag', $this->get_callback( 'wrap_script' ), 100, 2 );
 
 		if ( WP_DEBUG ) {
-			add_filter( 'googlesitekit_setup_gtag', array( $this, 'setup_test_tag' ), 10, 1 );
+			add_filter( 'googlesitekit_setup_gtag', $this->get_callback( 'setup_test_tag' ), 10, 1 );
 		}
 	}
 
@@ -63,7 +65,7 @@ class Orejime_Integration_Google_Site_Kit extends Orejime_Integration {
 	 * @param string $tag HTML.
 	 * @param string $handle Handle.
 	 */
-	public function wrap_script( $tag, $handle ) {
+	private function wrap_script( $tag, $handle ) {
 		if (
 			class_exists( '\Google\Site_Kit\Core\Tags\GTag' )
 			&& \Google\Site_Kit\Core\Tags\GTag::HANDLE === $handle
@@ -79,7 +81,7 @@ class Orejime_Integration_Google_Site_Kit extends Orejime_Integration {
 	 *
 	 * @param \Google\Site_Kit\Core\Tags\GTag $gtag GTag.
 	 */
-	public function setup_test_tag( $gtag ) {
+	private function setup_test_tag( $gtag ) {
 		$gtag->add_tag( 'orejime' );
 	}
 }
