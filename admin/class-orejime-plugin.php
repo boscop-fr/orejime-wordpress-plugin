@@ -8,7 +8,7 @@
 /**
  * The main entry point of the plugin.
  */
-class Orejime_Plugin {
+final class Orejime_Plugin {
 
 	const MENU_SLUG     = 'orejime';
 	const CDN_URL       = 'https://cdn.jsdelivr.net/npm/orejime';
@@ -31,9 +31,20 @@ class Orejime_Plugin {
 	private Orejime_Purpose_Taxonomy_Integrated $taxonomy;
 
 	/**
+	 * Loads the plugin.
+	 */
+	public static function load() {
+		static $instance = null;
+
+		if ( ! $instance ) {
+			$instance = new self();
+		}
+	}
+
+	/**
 	 * Initializes the plugin.
 	 */
-	public function __construct() {
+	private function __construct() {
 		$this->integrations = new Orejime_Integration_Registry();
 		$this->taxonomy     = new Orejime_Purpose_Taxonomy_Integrated( $this->integrations );
 		$this->taxonomy->register();

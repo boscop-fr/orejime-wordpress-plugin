@@ -29,4 +29,4 @@ require_once __DIR__ . '/integrations/class-orejime-integration-matomo.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-monster-insights.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-registry.php';
 
-new Orejime_Plugin();
+Orejime_Plugin::load();
