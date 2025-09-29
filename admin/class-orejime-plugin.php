@@ -72,9 +72,9 @@ final class Orejime_Plugin {
 		);
 
 		$this->integrations->register(
-			new Orejime_Integration_Google_Site_Kit(
-				'google-site-kit',
-				'Google Site Kit',
+			new Orejime_Integration_Google_Site_Kit_Module_Analytics(
+				'google-site-kit-analytics',
+				'Google Site Kit Analytics',
 			),
 		);
 
