@@ -25,6 +25,7 @@ require_once __DIR__ . '/admin/media.php';
 require_once __DIR__ . '/admin/scripts.php';
 require_once __DIR__ . '/integrations/class-orejime-integration.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-core-embed-block.php';
+require_once __DIR__ . '/integrations/class-orejime-integration-ga-google-analytics.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module-analytics.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-matomo.php';

@@ -72,6 +72,13 @@ final class Orejime_Plugin {
 		);
 
 		$this->integrations->register(
+			new Orejime_Integration_GA_Google_Analytics(
+				'ga-google-analytics',
+				'GA Google Analytics',
+			),
+		);
+
+		$this->integrations->register(
 			new Orejime_Integration_Google_Site_Kit_Module_Analytics(
 				'google-site-kit-analytics',
 				'Google Site Kit Analytics',
