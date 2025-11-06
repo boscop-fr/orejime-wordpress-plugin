@@ -52,12 +52,42 @@ final class Orejime_Plugin {
 		$this->taxonomy->register();
 
 		add_action( 'plugins_loaded', $this->get_callback( 'register_integrations' ) );
+		add_action( 'init', $this->get_callback( 'register_blocks' ) );
 		add_action( 'wp_enqueue_scripts', $this->get_callback( 'enqueue_scripts' ) );
 		add_action( 'admin_menu', $this->get_callback( 'setup_menu' ) );
 		add_filter(
 			'plugin_action_links_' . OREJIME_PLUGIN_FILE,
 			$this->get_callback( 'setup_action_links' )
 		);
+	}
+
+	/**
+	 * Registers custom blocks.
+	 */
+	private function register_blocks() {
+		$build_path    = dirname( __DIR__ ) . '/build';
+		$manifest_path = "$build_path/blocks-manifest.php";
+
+		if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
+			wp_register_block_types_from_metadata_collection(
+				$build_path,
+				$manifest_path
+			);
+			return;
+		}
+
+		if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
+			wp_register_block_metadata_collection(
+				$build_path,
+				$manifest_path
+			);
+		}
+
+		$manifest_data = require $manifest_path;
+
+		foreach ( array_keys( $manifest_data ) as $type ) {
+			register_block_type( "$build_path/$type" );
+		}
 	}
 
 	/**

@@ -51,6 +51,7 @@ class Orejime_Purpose_Taxonomy {
 				'public'       => false,
 				'hierarchical' => true,
 				'show_ui'      => true,
+				'show_in_rest' => true,
 				'labels'       => array(
 					'name'                              => __( 'Purposes', 'orejime' ),
 					'singular_name'                     => __( 'Purpose', 'orejime' ),

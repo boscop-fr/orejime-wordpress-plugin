@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "orejime/contextual-consent",
+	"title": "Contextual consent",
+	"category": "widget",
+	"icon": "shield-alt",
+	"description": "Hides content until the user gives consent",
+	"keywords": [ "gdpr", "consent", "purpose", "guard" ],
+	"textdomain": "orejime",
+	"attributes": {
+		"purposeId": {
+			"type": "integer"
+		}
+	},
+	"editorScript": "file:./index.js",
+	"render": "file:./render.php"
+}

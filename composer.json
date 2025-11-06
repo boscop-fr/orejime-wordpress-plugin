@@ -14,7 +14,7 @@
         }
     },
     "scripts": {
-        "lint": "vendor/bin/phpcs .",
+        "lint": "vendor/bin/phpcs -s .",
         "format": "vendor/bin/phpcbf ."
     },
     "require-dev": {
