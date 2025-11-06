@@ -14,6 +14,8 @@ class Orejime_Purpose_Taxonomy {
 
 	const NAME          = 'orejime_purpose';
 	const COOKIES_FIELD = 'orejime_cookies';
+	const NONCE_ACTION  = 'orejime_purpose_meta';
+	const NONCE_NAME    = 'orejime_purpose_meta_nonce';
 
 	/**
 	 * Hooks everything up.
@@ -145,6 +147,8 @@ class Orejime_Purpose_Taxonomy {
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $html;
+
+		wp_nonce_field( self::NONCE_ACTION, self::NONCE_NAME );
 	}
 
 	/**
@@ -184,17 +188,21 @@ class Orejime_Purpose_Taxonomy {
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $html;
+
+		wp_nonce_field( self::NONCE_ACTION, self::NONCE_NAME );
 	}
 
 	/**
 	 * Saves custom fields of a purpose taxonomy.
 	 *
-	 * @todo Properly check nonces.
-	 *
 	 * @param string $term_id Term id.
 	 */
 	private function save_custom_fields( $term_id ) {
-		// phpcs:disable WordPress.Security.NonceVerification
+		$nonce = sanitize_text_field( wp_unslash( $_POST[ self::NONCE_NAME ] ?? '' ) );
+
+		if ( ! wp_verify_nonce( $nonce, self::NONCE_ACTION ) ) {
+			return;
+		}
 
 		if ( isset( $_POST[ self::COOKIES_FIELD ] ) ) {
 			update_term_meta(
@@ -203,8 +211,6 @@ class Orejime_Purpose_Taxonomy {
 				sanitize_text_field( wp_unslash( $_POST[ self::COOKIES_FIELD ] ) )
 			);
 		}
-
-		// phpcs:enable WordPress.Security.NonceVerification
 	}
 
 	/**
