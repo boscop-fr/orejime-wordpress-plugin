@@ -51,8 +51,9 @@ final class Orejime_Plugin {
 		$this->taxonomy     = new Orejime_Purpose_Taxonomy_Integrated( $this->integrations );
 		$this->taxonomy->register();
 
-		add_action( 'plugins_loaded', $this->get_callback( 'register_integrations' ) );
-		add_action( 'init', $this->get_callback( 'register_blocks' ) );
+		add_action( 'plugins_loaded', $this->get_callback( 'register_plugins_loaded_integrations' ), 100 );
+		add_action( 'init', $this->get_callback( 'register_init_integrations' ), 100 );
+		add_action( 'init', $this->get_callback( 'register_blocks' ), 100 );
 		add_action( 'wp_enqueue_scripts', $this->get_callback( 'enqueue_scripts' ) );
 		add_action( 'admin_menu', $this->get_callback( 'setup_menu' ) );
 		add_filter(
@@ -93,7 +94,7 @@ final class Orejime_Plugin {
 	/**
 	 * Registers built-in integrations.
 	 */
-	private function register_integrations() {
+	private function register_plugins_loaded_integrations() {
 		$this->integrations->register(
 			new Orejime_Integration_Core_Embed_Block(
 				'core-embed-block',
@@ -109,13 +110,6 @@ final class Orejime_Plugin {
 		);
 
 		$this->integrations->register(
-			new Orejime_Integration_Google_Site_Kit_Module_Analytics(
-				'google-site-kit-analytics',
-				'Google Site Kit Analytics',
-			),
-		);
-
-		$this->integrations->register(
 			new Orejime_Integration_Matomo(
 				'matomo',
 				'Matomo',
@@ -126,6 +120,25 @@ final class Orejime_Plugin {
 			new Orejime_Integration_Monster_Insights(
 				'monster-insights',
 				'Monster Insights',
+			),
+		);
+	}
+
+	/**
+	 * Registers built-in integrations.
+	 */
+	private function register_init_integrations() {
+		$this->integrations->register(
+			new Orejime_Integration_Google_Site_Kit_Module_Analytics(
+				'google-site-kit-analytics',
+				'Google Site Kit Analytics',
+			),
+		);
+
+		$this->integrations->register(
+			new Orejime_Integration_Google_Site_Kit_Module_Tag_Manager(
+				'google-site-kit-tag-manager',
+				'Google Site Kit Tag Manager',
 			),
 		);
 	}

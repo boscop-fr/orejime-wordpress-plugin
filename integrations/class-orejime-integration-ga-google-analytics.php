@@ -50,21 +50,13 @@ class Orejime_Integration_GA_Google_Analytics extends Orejime_Integration {
 	private function wrap_action( $hook_name ) {
 		if ( has_action( $hook_name, self::TRACKING_CODE_CALLBACK ) ) {
 			remove_action( $hook_name, self::TRACKING_CODE_CALLBACK );
-			add_action( $hook_name, $this->get_callback( 'print_script' ) );
+			add_action(
+				$hook_name,
+				fn() => orejime_print_purpose_code(
+					self::TRACKING_CODE_CALLBACK,
+					$this->purpose_id
+				)
+			);
 		}
-	}
-
-	/**
-	 * Wraps and prints the original script so it is handled
-	 * by orejime.
-	 */
-	private function print_script() {
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo orejime_purpose_code_wrapper_start( $this->purpose_id );
-
-		call_user_func( self::TRACKING_CODE_CALLBACK );
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo orejime_purpose_code_wrapper_end();
 	}
 }

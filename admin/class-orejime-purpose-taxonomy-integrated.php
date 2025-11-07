@@ -37,7 +37,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	public function register() {
 		parent::register();
 
-		add_action( 'init', $this->get_callback( 'setup_integrations' ) );
+		add_action( 'init', $this->get_callback( 'setup_integrations' ), PHP_INT_MAX );
 
 		add_filter( 'manage_edit-' . self::NAME . '_columns', $this->get_callback( 'add_integration_table_column' ) );
 		add_filter( 'manage_' . self::NAME . '_custom_column', $this->get_callback( 'fill_custom_table_column' ), 10, 3 );

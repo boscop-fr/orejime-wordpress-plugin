@@ -37,3 +37,20 @@ function orejime_wrap_purpose_code( $code, $purpose, $is_contextual = false ) {
 		$is_contextual
 	) . $code . orejime_purpose_code_wrapper_end();
 }
+
+/**
+ * Prints HTML wrapped in a template tag handled by Orejime.
+ *
+ * @param callable $callback Callback that prints code.
+ * @param string   $purpose Purpose id.
+ * @param boolean  $is_contextual Whether the code is contextual.
+ */
+function orejime_print_purpose_code( $callback, $purpose, $is_contextual = false ) {
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo orejime_purpose_code_wrapper_start( $purpose, $is_contextual );
+
+	call_user_func( $callback );
+
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo orejime_purpose_code_wrapper_end();
+}
