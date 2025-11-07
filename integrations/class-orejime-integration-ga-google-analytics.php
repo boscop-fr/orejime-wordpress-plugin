@@ -12,14 +12,16 @@ class Orejime_Integration_GA_Google_Analytics extends Orejime_Integration {
 
 	use Orejime_Hookable;
 
-	const SCRIPT_HANDLE = 'ga-google-analytics';
+	const TRACKING_CODE_CALLBACK = 'ga_google_analytics_tracking_code';
 
 	/**
-	 * {@inheritDoc}
+	 * Wraps the original action setup by the plugin.
 	 */
 	public function register() {
-		add_filter( 'ga_google_analytics_script_atts', $this->get_callback( 'script_attributes' ), 100 );
-		add_filter( 'ga_google_analytics_script_atts_ext', $this->get_callback( 'script_attributes' ), 100 );
+		$this->wrap_action( 'admin_head' );
+		$this->wrap_action( 'wp_head' );
+		$this->wrap_action( 'admin_footer' );
+		$this->wrap_action( 'wp_footer' );
 	}
 
 	/**
@@ -40,13 +42,29 @@ class Orejime_Integration_GA_Google_Analytics extends Orejime_Integration {
 	}
 
 	/**
-	 * Adds attributes to the script tags so they can be
-	 * picked up and wrapped automatically.
+	 * Wraps the original action setup by the plugin if it
+	 * is registered under the given hook name.
 	 *
-	 * @param string $attrs Attributes.
-	 * @return string Attributes.
+	 * @param string $hook_name Hook name.
 	 */
-	private function script_attributes( $attrs ) {
-		return $attrs . ' ' . orejime_auto_wrap_attribute( $this->purpose_id );
+	private function wrap_action( $hook_name ) {
+		if ( has_action( $hook_name, self::TRACKING_CODE_CALLBACK ) ) {
+			remove_action( $hook_name, self::TRACKING_CODE_CALLBACK );
+			add_action( $hook_name, $this->get_callback( 'print_script' ) );
+		}
+	}
+
+	/**
+	 * Wraps and prints the original script so it is handled
+	 * by orejime.
+	 */
+	private function print_script() {
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo orejime_purpose_code_wrapper_start( $this->purpose_id );
+
+		call_user_func( self::TRACKING_CODE_CALLBACK );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo orejime_purpose_code_wrapper_end();
 	}
 }
