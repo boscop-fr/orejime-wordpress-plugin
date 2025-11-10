@@ -20,17 +20,17 @@ class Orejime_Integration_Google_Site_Kit_Module_Tag_Manager extends Orejime_Int
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @todo Find a way to provide a regex to Orejime, as
-	 * cookie names are escaped if they are string.
+	 * The user will have to list cookies manually, as there
+	 * is no way to tell which cookies are actually set
+	 * depending on the tag manager setup.
 	 */
 	public function get_cookie_names() {
-		return array(
-			'_ga',
-			'_ga_*',
-		);
+		return array();
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
 	 * Wraps original actions setup by the module to
 	 * customize the output code.
 	 */

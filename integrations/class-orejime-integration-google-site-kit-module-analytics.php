@@ -18,22 +18,33 @@ class Orejime_Integration_Google_Site_Kit_Module_Analytics extends Orejime_Integ
 	public string $slug = 'analytics-4';
 
 	/**
+	 * Tag id.
+	 *
+	 * @var string
+	 */
+	private string $tag_id;
+
+	/**
 	 * {@inheritDoc}
 	 *
-	 * @todo Find a way to provide a regex to Orejime, as
-	 * cookie names are escaped if they are string.
+	 * @see https://support.google.com/analytics/answer/11397207
 	 */
 	public function get_cookie_names() {
-		return array(
-			'_ga',
-			'_ga_*',
-		);
+		$cookies = array( '_ga' );
+
+		if ( $this->tag_id ) {
+			$cookies[] = '_ga_' . $this->tag_id;
+		}
+
+		return $cookies;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function init_tag( $id ) {
+	protected function init_tag( $tag_id ) {
+		$this->tag_id = $tag_id;
+
 		add_filter( 'script_loader_tag', $this->get_callback( 'wrap_script' ), 100, 2 );
 	}
 

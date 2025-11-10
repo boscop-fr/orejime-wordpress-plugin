@@ -46,9 +46,9 @@ abstract class Orejime_Integration_Google_Site_Kit_Module extends Orejime_Integr
 	 * Initialization logic for tags that will actually be
 	 * rendered.
 	 *
-	 * @param string $id Tag id.
+	 * @param string $tag_id Tag id.
 	 */
-	abstract protected function init_tag( $id );
+	abstract protected function init_tag( $tag_id );
 
 	/**
 	 * Sets up a dummy tag for testing purposes.
