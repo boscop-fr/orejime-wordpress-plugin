@@ -11,6 +11,7 @@ Besides letting you manually configure purposes, the plugin provides built-in in
 * [Embed blocks](https://wordpress.com/support/wordpress-editor/blocks/embed-block)
 * [GA Google Analytics plugin](https://wordpress.org/plugins/ga-google-analytics/)
 * [Google Site Kit plugin](https://wordpress.org/plugins/google-site-kit)
+* [Jetpack plugin](https://wordpress.org/plugins/jetpack)
 * [Matomo plugin](https://wordpress.org/plugins/matomo)
 * [Monster Insights plugin](https://wordpress.org/plugins/google-analytics-for-wordpress)
 

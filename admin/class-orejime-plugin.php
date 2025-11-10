@@ -110,6 +110,13 @@ final class Orejime_Plugin {
 		);
 
 		$this->integrations->register(
+			new Orejime_Integration_Jetpack_Module_Stats(
+				'jetpack-stats',
+				'Jetpack Stats',
+			),
+		);
+
+		$this->integrations->register(
 			new Orejime_Integration_Matomo(
 				'matomo',
 				'Matomo',

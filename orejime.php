@@ -29,6 +29,8 @@ require_once __DIR__ . '/integrations/class-orejime-integration-ga-google-analyt
 require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module-analytics.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module-tag-manager.php';
+require_once __DIR__ . '/integrations/class-orejime-integration-jetpack-module.php';
+require_once __DIR__ . '/integrations/class-orejime-integration-jetpack-module-stats.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-matomo.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-monster-insights.php';
 require_once __DIR__ . '/integrations/class-orejime-integration-registry.php';
