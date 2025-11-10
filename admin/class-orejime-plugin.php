@@ -51,8 +51,19 @@ final class Orejime_Plugin {
 		$this->taxonomy     = new Orejime_Purpose_Taxonomy_Integrated( $this->integrations );
 		$this->taxonomy->register();
 
-		add_action( 'plugins_loaded', $this->get_callback( 'register_plugins_loaded_integrations' ), 100 );
-		add_action( 'init', $this->get_callback( 'register_init_integrations' ), 100 );
+		/**
+		 * Tells if the plugin should register its default
+		 * integrations automatically on startup.
+		 *
+		 * @param bool $register Whether to register integrations.
+		 */
+		$register_defaults = apply_filters( 'orejime_register_default_integrations', true );
+
+		if ( $register_defaults ) {
+			add_action( 'plugins_loaded', $this->get_callback( 'register_plugins_loaded_integrations' ), 100 );
+			add_action( 'init', $this->get_callback( 'register_init_integrations' ), 100 );
+		}
+
 		add_action( 'init', $this->get_callback( 'register_blocks' ), 100 );
 		add_action( 'wp_enqueue_scripts', $this->get_callback( 'enqueue_scripts' ) );
 		add_action( 'admin_menu', $this->get_callback( 'setup_menu' ) );
