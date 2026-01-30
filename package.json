@@ -6,6 +6,7 @@
   "scripts": {
     "up": "wp-env start",
     "start": "wp-scripts start --blocks-manifest",
+    "build": "wp-scripts build --blocks-manifest",
     "lint": "npm run lint-js && npm run lint-php",
     "lint-js": "wp-scripts lint-js ./src",
     "lint-php": "npm run composer lint",
