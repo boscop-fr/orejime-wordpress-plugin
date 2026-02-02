@@ -15,6 +15,16 @@ Besides letting you manually configure purposes, the plugin provides built-in in
 * [Matomo plugin](https://wordpress.org/plugins/matomo)
 * [Monster Insights plugin](https://wordpress.org/plugins/google-analytics-for-wordpress)
 
+### Contextual consent
+
+A custom editor block allows one to block any content until the user gives their explicit consent.
+This would display a placeholder allowing the user to do so on the spot.
+When they does, the placeholder is replaced by the intended content.
+
+This block can be used around any other block or list of blocks, as the core `group` block.
+
+The contextual consent placeholder can be added automatically to any `embed` blocks.
+
 ## Development
 
 ### Initial setup
