@@ -5,10 +5,12 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
 /**
  * Allows using private methods as hook callbacks.
  */
-trait Orejime_Hookable {
+trait Hookable {
 
 	/**
 	 * Proxifies the given method so that it can be used

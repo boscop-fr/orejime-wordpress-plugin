@@ -5,10 +5,18 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration\Google_Site_Kit\Module;
+
+use Google\Site_Kit\Core\Tags\GTag;
+use Orejime\Hookable;
+use Orejime\Integration\Google_Site_Kit\Module;
+
 /**
  * Google Site Kit Analytics integration.
  */
-class Orejime_Integration_Google_Site_Kit_Module_Analytics extends Orejime_Integration_Google_Site_Kit_Module {
+class Analytics extends Module {
+
+	use Hookable;
 
 	/**
 	 * {@inheritDoc}
@@ -57,9 +65,9 @@ class Orejime_Integration_Google_Site_Kit_Module_Analytics extends Orejime_Integ
 	private function wrap_script( $tag, $handle ) {
 		if (
 			class_exists( '\Google\Site_Kit\Core\Tags\GTag' )
-			&& \Google\Site_Kit\Core\Tags\GTag::HANDLE === $handle
+			&& Gtag::HANDLE === $handle
 		) {
-			return orejime_wrap_purpose_code( $tag, $this->purpose_id );
+			return \Orejime\wrap_purpose_code( $tag, $this->purpose_id );
 		}
 
 		return $tag;

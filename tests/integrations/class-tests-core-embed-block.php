@@ -5,10 +5,15 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
+use Orejime\Integration\Core_Embed_Block;
+use WP_UnitTestCase;
+
 /**
  * Embed blocks integration tests.
  */
-class Tests_Orejime_Integration_Core_Embed_Block extends WP_UnitTestCase {
+class Tests_Core_Embed_Block extends WP_UnitTestCase {
 
 	/**
 	 * Tests if embed blocks are properly wrapped.
@@ -17,7 +22,7 @@ class Tests_Orejime_Integration_Core_Embed_Block extends WP_UnitTestCase {
 		$purpose_id = 12;
 		$embed_code = '<iframe></iframe>';
 
-		$integration = new Orejime_Integration_Core_Embed_Block( 'test', 'Test' );
+		$integration = new Core_Embed_Block( 'test', 'Test' );
 		$integration->register();
 		$integration->set_purpose( $purpose_id );
 
@@ -31,7 +36,7 @@ class Tests_Orejime_Integration_Core_Embed_Block extends WP_UnitTestCase {
 		);
 
 		$this->assertEquals(
-			orejime_wrap_purpose_code( $embed_code, $purpose_id, true ),
+			wrap_purpose_code( $embed_code, $purpose_id, true ),
 			$content
 		);
 	}

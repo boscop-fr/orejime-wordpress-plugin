@@ -5,22 +5,24 @@
  * @package Orejime
  */
 
-define( 'OREJIME_SETTING_CONTEXTUAL_CONSENT', 'orejime_contextual_consent' );
+namespace Orejime;
+
+const CONTEXTUAL_CONSENT_SETTING = 'orejime_contextual_consent';
 
 /**
  *  Tells if contextual consent is enabled.
  *
  * @return boolean
  */
-function orejime_is_contextual_consent_enabled() {
-	return ( '1' === get_option( OREJIME_SETTING_CONTEXTUAL_CONSENT ) );
+function is_contextual_consent_enabled() {
+	return ( '1' === get_option( CONTEXTUAL_CONSENT_SETTING ) );
 }
 
 /**
  *  Renders the input for the contextual consent setting.
  */
-function orejime_contextual_consent_setting() {
-	$name    = OREJIME_SETTING_CONTEXTUAL_CONSENT;
+function contextual_consent_setting() {
+	$name    = CONTEXTUAL_CONSENT_SETTING;
 	$checked = checked( 1, get_option( $name ), false );
 	$html    = <<<HTML
 		<label for="$name">
@@ -44,7 +46,7 @@ function orejime_contextual_consent_setting() {
 /**
  * Registers Orejime settings.
  */
-function orejime_register_media_settings() {
+function register_media_settings() {
 	add_settings_section(
 		'orejime_media',
 		'Orejime',
@@ -53,14 +55,14 @@ function orejime_register_media_settings() {
 	);
 
 	add_settings_field(
-		OREJIME_SETTING_CONTEXTUAL_CONSENT,
+		CONTEXTUAL_CONSENT_SETTING,
 		'Contextual consent',
-		'orejime_contextual_consent_setting',
+		__NAMESPACE__ . '\contextual_consent_setting',
 		'media',
 		'orejime_media'
 	);
 
-	register_setting( 'media', OREJIME_SETTING_CONTEXTUAL_CONSENT );
+	register_setting( 'media', CONTEXTUAL_CONSENT_SETTING );
 }
 
-add_action( 'admin_init', 'orejime_register_media_settings' );
+add_action( 'admin_init', __NAMESPACE__ . '\register_media_settings' );

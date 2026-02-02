@@ -5,10 +5,14 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
+use Exception;
+
 /**
  * Stores registered integrations.
  */
-class Orejime_Integration_Registry {
+class Integration_Registry {
 
 	/**
 	 * Integrations.
@@ -20,10 +24,10 @@ class Orejime_Integration_Registry {
 	/**
 	 * Registers an integration.
 	 *
-	 * @param Orejime_Integration $integration Integration.
+	 * @param Integration $integration Integration.
 	 * @throws Exception When the integration is already registered.
 	 */
-	public function register( Orejime_Integration $integration ) {
+	public function register( Integration $integration ) {
 		if ( isset( $this->integrations[ $integration->id ] ) ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			throw new Exception( "Integration `{$integration->id}` is already registered." );
@@ -39,7 +43,7 @@ class Orejime_Integration_Registry {
 	/**
 	 * Returns all registered integrations.
 	 *
-	 * @return Orejime_Integration[] Integrations.
+	 * @return Integration[] Integrations.
 	 */
 	public function get_all() {
 		return array_values( $this->integrations );
@@ -48,7 +52,7 @@ class Orejime_Integration_Registry {
 	/**
 	 * Returns all active integrations.
 	 *
-	 * @return Orejime_Integration[] Integrations.
+	 * @return Integration[] Integrations.
 	 */
 	public function get_active() {
 		return array_values(
@@ -59,7 +63,7 @@ class Orejime_Integration_Registry {
 	/**
 	 * Returns all inactive integrations.
 	 *
-	 * @return Orejime_Integration[] Integrations.
+	 * @return Integration[] Integrations.
 	 */
 	public function get_inactive() {
 		return array_values(
@@ -71,7 +75,7 @@ class Orejime_Integration_Registry {
 	 * Finds a registered integration by id.
 	 *
 	 * @param string $id Integration id.
-	 * @return Orejime_Integration|null Integration.
+	 * @return Integration|null Integration.
 	 */
 	public function get( $id ) {
 		return $this->integrations[ $id ] ?? null;

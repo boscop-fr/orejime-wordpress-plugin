@@ -5,12 +5,17 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration\Jetpack\Module;
+
+use Orejime\Integration\Jetpack\Module;
+use Orejime\Hookable;
+
 /**
  * Jetpack Stats integration.
  */
-class Orejime_Integration_Jetpack_Module_Stats extends Orejime_Integration_Jetpack_Module {
+class Stats extends Module {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	const SCRIPT_HANDLE = 'jetpack-stats';
 
@@ -38,7 +43,7 @@ class Orejime_Integration_Jetpack_Module_Stats extends Orejime_Integration_Jetpa
 	 */
 	private function wrap_script( $tag, $handle ) {
 		if ( self::SCRIPT_HANDLE === $handle ) {
-			return orejime_wrap_purpose_code( $tag, $this->purpose_id );
+			return \Orejime\wrap_purpose_code( $tag, $this->purpose_id );
 		}
 
 		return $tag;

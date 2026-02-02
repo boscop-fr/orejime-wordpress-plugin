@@ -5,10 +5,14 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration\Google_Site_Kit\Module;
+
+use Orejime\Integration\Google_Site_Kit\Module;
+
 /**
  * Google Site Kit Tag Manager integration.
  */
-class Orejime_Integration_Google_Site_Kit_Module_Tag_Manager extends Orejime_Integration_Google_Site_Kit_Module {
+class Tag_Manager extends Module {
 
 	/**
 	 * {@inheritDoc}
@@ -46,7 +50,7 @@ class Orejime_Integration_Google_Site_Kit_Module_Tag_Manager extends Orejime_Int
 
 			add_action(
 				$callback['action'],
-				fn() => orejime_print_purpose_code(
+				fn() => \Orejime\print_purpose_code(
 					$callback['function'],
 					$this->purpose_id
 				),
@@ -96,7 +100,7 @@ class Orejime_Integration_Google_Site_Kit_Module_Tag_Manager extends Orejime_Int
 						continue;
 					}
 
-					$function = new ReflectionFunction( $callback['function'] );
+					$function = new \ReflectionFunction( $callback['function'] );
 					$class    = get_class( $function->getClosureThis() );
 
 					if ( $class === $tag_class ) {

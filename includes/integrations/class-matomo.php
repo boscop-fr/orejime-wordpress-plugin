@@ -5,12 +5,18 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration;
+
+use Orejime\Hookable;
+use Orejime\Integration;
+use WpMatomo;
+
 /**
  * Matomo integration.
  */
-class Orejime_Integration_Matomo extends Orejime_Integration {
+class Matomo extends Integration {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	/**
 	 * {@inheritDoc}
@@ -23,7 +29,7 @@ class Orejime_Integration_Matomo extends Orejime_Integration {
 	 * {@inheritDoc}
 	 */
 	public function is_active() {
-		if ( ! class_exists( 'WpMatomo' ) ) {
+		if ( ! class_exists( '\WpMatomo' ) ) {
 			return false;
 		}
 
@@ -48,6 +54,6 @@ class Orejime_Integration_Matomo extends Orejime_Integration {
 	 * @param string $script HTML.
 	 */
 	private function wrap_script( $script ) {
-		return orejime_wrap_purpose_code( $script, $this->purpose_id );
+		return \Orejime\wrap_purpose_code( $script, $this->purpose_id );
 	}
 }

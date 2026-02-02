@@ -5,12 +5,17 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration;
+
+use Orejime\Hookable;
+use Orejime\Integration;
+
 /**
  * Embed blocks integration.
  */
-class Orejime_Integration_Core_Embed_Block extends Orejime_Integration {
+class Core_Embed_Block extends Integration {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	/**
 	 * {@inheritDoc}
@@ -23,7 +28,7 @@ class Orejime_Integration_Core_Embed_Block extends Orejime_Integration {
 	 * {@inheritDoc}
 	 */
 	public function is_active() {
-		return orejime_is_contextual_consent_enabled();
+		return \Orejime\is_contextual_consent_enabled();
 	}
 
 	/**
@@ -42,6 +47,6 @@ class Orejime_Integration_Core_Embed_Block extends Orejime_Integration {
 			return $content;
 		}
 
-		return orejime_wrap_purpose_code( $content, $this->purpose_id, true );
+		return \Orejime\wrap_purpose_code( $content, $this->purpose_id, true );
 	}
 }

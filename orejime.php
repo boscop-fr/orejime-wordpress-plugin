@@ -9,6 +9,8 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -17,22 +19,22 @@ if ( ! defined( 'OREJIME_PLUGIN_FILE' ) ) {
 	define( 'OREJIME_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 }
 
-require_once __DIR__ . '/includes/trait-orejime-hookable.php';
-require_once __DIR__ . '/admin/class-orejime-plugin.php';
-require_once __DIR__ . '/admin/class-orejime-purpose-taxonomy.php';
-require_once __DIR__ . '/admin/class-orejime-purpose-taxonomy-integrated.php';
-require_once __DIR__ . '/admin/media.php';
-require_once __DIR__ . '/admin/scripts.php';
-require_once __DIR__ . '/integrations/class-orejime-integration.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-core-embed-block.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-ga-google-analytics.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module-analytics.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-google-site-kit-module-tag-manager.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-jetpack-module.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-jetpack-module-stats.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-matomo.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-monster-insights.php';
-require_once __DIR__ . '/integrations/class-orejime-integration-registry.php';
+require_once __DIR__ . '/includes/trait-hookable.php';
+require_once __DIR__ . '/includes/class-plugin.php';
+require_once __DIR__ . '/includes/class-purpose-taxonomy.php';
+require_once __DIR__ . '/includes/class-purpose-taxonomy-integrated.php';
+require_once __DIR__ . '/includes/media.php';
+require_once __DIR__ . '/includes/scripts.php';
+require_once __DIR__ . '/includes/class-integration.php';
+require_once __DIR__ . '/includes/class-integration-registry.php';
+require_once __DIR__ . '/includes/integrations/class-core-embed-block.php';
+require_once __DIR__ . '/includes/integrations/class-ga-google-analytics.php';
+require_once __DIR__ . '/includes/integrations/google-site-kit/class-module.php';
+require_once __DIR__ . '/includes/integrations/google-site-kit/modules/class-analytics.php';
+require_once __DIR__ . '/includes/integrations/google-site-kit/modules/class-tag-manager.php';
+require_once __DIR__ . '/includes/integrations/jetpack/class-module.php';
+require_once __DIR__ . '/includes/integrations/jetpack/modules/class-stats.php';
+require_once __DIR__ . '/includes/integrations/class-matomo.php';
+require_once __DIR__ . '/includes/integrations/class-monster-insights.php';
 
-Orejime_Plugin::load();
+Plugin::load();

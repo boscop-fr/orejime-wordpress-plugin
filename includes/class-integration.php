@@ -5,12 +5,14 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
 /**
  * Base class for a plugin integration.
  * This allows Orejime to hook itself to other plugins as to
  * handle their scripts automatically.
  */
-abstract class Orejime_Integration {
+abstract class Integration {
 
 	/**
 	 * Unique id.

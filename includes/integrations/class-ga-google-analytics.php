@@ -5,12 +5,17 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration;
+
+use Orejime\Hookable;
+use Orejime\Integration;
+
 /**
  * GA Google Analytics integration.
  */
-class Orejime_Integration_GA_Google_Analytics extends Orejime_Integration {
+class GA_Google_Analytics extends Integration {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	const TRACKING_CODE_CALLBACK = 'ga_google_analytics_tracking_code';
 
@@ -28,7 +33,7 @@ class Orejime_Integration_GA_Google_Analytics extends Orejime_Integration {
 	 * {@inheritDoc}
 	 */
 	public function is_active() {
-		return class_exists( 'GA_Google_Analytics' );
+		return class_exists( '\GA_Google_Analytics' );
 	}
 
 	/**
@@ -52,7 +57,7 @@ class Orejime_Integration_GA_Google_Analytics extends Orejime_Integration {
 			remove_action( $hook_name, self::TRACKING_CODE_CALLBACK );
 			add_action(
 				$hook_name,
-				fn() => orejime_print_purpose_code(
+				fn() => \Orejime\print_purpose_code(
 					self::TRACKING_CODE_CALLBACK,
 					$this->purpose_id
 				)

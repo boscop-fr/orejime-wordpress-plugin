@@ -5,12 +5,17 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
+use SplObjectStorage;
+use WP_Term;
+
 /**
  * Registers and manages a custom taxonomy to edit purposes.
  */
-class Orejime_Purpose_Taxonomy {
+class Purpose_Taxonomy {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	const NAME          = 'orejime_purpose';
 	const COOKIES_FIELD = 'orejime_cookies';

@@ -5,12 +5,14 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
 /**
  * The main entry point of the plugin.
  */
-final class Orejime_Plugin {
+final class Plugin {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	const MENU_SLUG     = 'orejime';
 	const CDN_URL       = 'https://cdn.jsdelivr.net/npm/orejime';
@@ -21,16 +23,16 @@ final class Orejime_Plugin {
 	/**
 	 * Integration registry.
 	 *
-	 * @var Orejime_Integration_Registry
+	 * @var Integration_Registry
 	 */
-	private Orejime_Integration_Registry $integrations;
+	private Integration_Registry $integrations;
 
 	/**
 	 * Taxonomy manager.
 	 *
-	 * @var Orejime_Purpose_Taxonomy_Integrated
+	 * @var Purpose_Taxonomy_Integrated
 	 */
-	private Orejime_Purpose_Taxonomy_Integrated $taxonomy;
+	private Purpose_Taxonomy_Integrated $taxonomy;
 
 	/**
 	 * Loads the plugin.
@@ -47,8 +49,8 @@ final class Orejime_Plugin {
 	 * Initializes the plugin.
 	 */
 	private function __construct() {
-		$this->integrations = new Orejime_Integration_Registry();
-		$this->taxonomy     = new Orejime_Purpose_Taxonomy_Integrated( $this->integrations );
+		$this->integrations = new Integration_Registry();
+		$this->taxonomy     = new Purpose_Taxonomy_Integrated( $this->integrations );
 		$this->taxonomy->register();
 
 		/**
@@ -107,35 +109,35 @@ final class Orejime_Plugin {
 	 */
 	private function register_plugins_loaded_integrations() {
 		$this->integrations->register(
-			new Orejime_Integration_Core_Embed_Block(
+			new \Orejime\Integration\Core_Embed_Block(
 				'core-embed-block',
 				'Embedded content'
 			),
 		);
 
 		$this->integrations->register(
-			new Orejime_Integration_GA_Google_Analytics(
+			new \Orejime\Integration\GA_Google_Analytics(
 				'ga-google-analytics',
 				'GA Google Analytics',
 			),
 		);
 
 		$this->integrations->register(
-			new Orejime_Integration_Jetpack_Module_Stats(
+			new \Orejime\Integration\Jetpack\Module\Stats(
 				'jetpack-stats',
 				'Jetpack Stats',
 			),
 		);
 
 		$this->integrations->register(
-			new Orejime_Integration_Matomo(
+			new \Orejime\Integration\Matomo(
 				'matomo',
 				'Matomo',
 			),
 		);
 
 		$this->integrations->register(
-			new Orejime_Integration_Monster_Insights(
+			new \Orejime\Integration\Monster_Insights(
 				'monster-insights',
 				'Monster Insights',
 			),
@@ -147,14 +149,14 @@ final class Orejime_Plugin {
 	 */
 	private function register_init_integrations() {
 		$this->integrations->register(
-			new Orejime_Integration_Google_Site_Kit_Module_Analytics(
+			new \Orejime\Integration\Google_Site_Kit\Module\Analytics(
 				'google-site-kit-analytics',
 				'Google Site Kit Analytics',
 			),
 		);
 
 		$this->integrations->register(
-			new Orejime_Integration_Google_Site_Kit_Module_Tag_Manager(
+			new \Orejime\Integration\Google_Site_Kit\Module\Tag_Manager(
 				'google-site-kit-tag-manager',
 				'Google Site Kit Tag Manager',
 			),

@@ -5,12 +5,17 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
+use Exception;
+use WP_Term;
+
 /**
  * Custom taxonomy for purposes with support for integrations.
  */
-class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
+class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	const INTEGRATION_FIELD  = 'orejime_integration_id';
 	const INTEGRATION_PREFIX = 'orejime_integration_';
@@ -18,16 +23,16 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	/**
 	 * Integration registry.
 	 *
-	 * @var Orejime_Integration_Registry
+	 * @var Integration_Registry
 	 */
-	private Orejime_Integration_Registry $integrations;
+	private Integration_Registry $integrations;
 
 	/**
 	 * Initializes the taxonomy.
 	 *
-	 * @param Orejime_Integration_Registry $integrations Integration registry.
+	 * @param Integration_Registry $integrations Integration registry.
 	 */
-	public function __construct( Orejime_Integration_Registry $integrations ) {
+	public function __construct( Integration_Registry $integrations ) {
 		$this->integrations = $integrations;
 	}
 
@@ -67,10 +72,10 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	/**
 	 * Registers a purpose to be managed by a given integration.
 	 *
-	 * @param Orejime_Integration $integration Integration.
+	 * @param Integration $integration Integration.
 	 * @return int Term id.
 	 */
-	private function register_integration_term( Orejime_Integration $integration ) {
+	private function register_integration_term( Integration $integration ) {
 		return $this->get_integration_term( $integration )
 			?? $this->create_integration_term( $integration );
 	}
@@ -78,11 +83,11 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	/**
 	 * Creates a term to be managed by a given integration.
 	 *
-	 * @param Orejime_Integration $integration Integration.
+	 * @param Integration $integration Integration.
 	 * @return int Term id.
 	 * @throws Exception When the term couldn't be created.
 	 */
-	private function create_integration_term( Orejime_Integration $integration ) {
+	private function create_integration_term( Integration $integration ) {
 		$term = wp_insert_term(
 			$integration->name,
 			self::NAME,
@@ -102,10 +107,10 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	/**
 	 * Finds the term managed by the given integration, if any.
 	 *
-	 * @param Orejime_Integration $integration Integration.
+	 * @param Integration $integration Integration.
 	 * @return int Term id.
 	 */
-	private function get_integration_term( Orejime_Integration $integration ) {
+	private function get_integration_term( Integration $integration ) {
 		$term = get_term_by(
 			'slug',
 			$this->term_slug( $integration->id ),
@@ -123,7 +128,7 @@ class Orejime_Purpose_Taxonomy_Integrated extends Orejime_Purpose_Taxonomy {
 	 * Finds the integration managing the given term, if any.
 	 *
 	 * @param int|WP_Term $term Term or term id.
-	 * @return Orejime_Integration|null Integration.
+	 * @return Integration|null Integration.
 	 */
 	private function get_term_integration( $term ) {
 		$term = get_term( $term );

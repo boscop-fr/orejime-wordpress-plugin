@@ -5,12 +5,17 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration;
+
+use Orejime\Hookable;
+use Orejime\Integration;
+
 /**
  * Monster Insights integration.
  */
-class Orejime_Integration_Monster_Insights extends Orejime_Integration {
+class Monster_Insights extends Integration {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	/**
 	 * {@inheritDoc}
@@ -39,7 +44,7 @@ class Orejime_Integration_Monster_Insights extends Orejime_Integration {
 	 */
 	private function open_tracking_code() {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo orejime_purpose_code_wrapper_start( $this->purpose_id );
+		echo \Orejime\purpose_code_wrapper_start( $this->purpose_id );
 	}
 
 	/**
@@ -47,6 +52,6 @@ class Orejime_Integration_Monster_Insights extends Orejime_Integration {
 	 */
 	private function close_tracking_code() {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo orejime_purpose_code_wrapper_end();
+		echo \Orejime\purpose_code_wrapper_end();
 	}
 }

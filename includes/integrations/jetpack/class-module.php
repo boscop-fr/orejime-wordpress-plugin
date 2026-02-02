@@ -5,10 +5,15 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration\Jetpack;
+
+use Orejime\Integration;
+use Jetpack;
+
 /**
  * Jetpack integration.
  */
-class Orejime_Integration_Jetpack_Module extends Orejime_Integration {
+class Module extends Integration {
 
 	/**
 	 * Module slug.
@@ -22,7 +27,7 @@ class Orejime_Integration_Jetpack_Module extends Orejime_Integration {
 	 * {@inheritDoc}
 	 */
 	public function is_active() {
-		return class_exists( 'JetPack' ) && Jetpack::is_module_active( $this->slug );
+		return class_exists( '\JetPack' ) && Jetpack::is_module_active( $this->slug );
 	}
 
 	/**

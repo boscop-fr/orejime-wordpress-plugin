@@ -5,12 +5,17 @@
  * @package Orejime
  */
 
+namespace Orejime\Integration\Google_Site_Kit;
+
+use Orejime\Hookable;
+use Orejime\Integration;
+
 /**
  * Google Site Kit integration.
  */
-abstract class Orejime_Integration_Google_Site_Kit_Module extends Orejime_Integration {
+abstract class Module extends Integration {
 
-	use Orejime_Hookable;
+	use Hookable;
 
 	/**
 	 * Module slug.

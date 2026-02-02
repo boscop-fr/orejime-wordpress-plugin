@@ -5,15 +5,20 @@
  * @package Orejime
  */
 
+namespace Orejime;
+
+use Orejime\Integration\GA_Google_Analytics;
+use WP_UnitTestCase;
+
 /**
  * GA Google Analytics integration tests.
  */
-class Tests_Orejime_Integration_GA_Google_Analytics extends WP_UnitTestCase {
+class Tests_GA_Google_Analytics extends WP_UnitTestCase {
 
 	/**
-	 * Tests if embed blocks are properly wrapped.
+	 * Tests if script tags are properly wrapped.
 	 */
-	public function test_wrap_block() {
+	public function test_wrap_scripts() {
 		$ga_id      = 'ga';
 		$purpose_id = 12;
 
@@ -26,9 +31,9 @@ class Tests_Orejime_Integration_GA_Google_Analytics extends WP_UnitTestCase {
 		);
 
 		$code         = ga_google_analytics_universal();
-		$wrapped_code = orejime_wrap_purpose_code( $code, $purpose_id );
+		$wrapped_code = wrap_purpose_code( $code, $purpose_id );
 
-		$integration = new Orejime_Integration_GA_Google_Analytics( 'test', 'Test' );
+		$integration = new GA_Google_Analytics( 'test', 'Test' );
 		$integration->register();
 		$integration->set_purpose( $purpose_id );
 
