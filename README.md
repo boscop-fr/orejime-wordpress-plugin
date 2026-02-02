@@ -47,3 +47,14 @@ npm start # builds assets and watches for changes
 npm run lint # lints JS and PHP code
 npm run format  # formats JS and PHP code
 ```
+
+## Architecture
+
+The plugin revolves around the concept of "integrations".
+An integration is a bridge between Orejime and a WordPress plugin or native feature.
+
+Every integration derives from the base [`Orejime_Integration`](./integrations/class-orejime-integration.php) class.
+They each must have unique a identifier and name, and should provide a way to tell if their target integration is currently active.
+They then hook into their target to alter their output, typically as to modify scripts so they can be handled by Orejime.
+
+For every active integration, Orejime would register an associated purpose, which allows for customizing the info that is shown to the end user.
