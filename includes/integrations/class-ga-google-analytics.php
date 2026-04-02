@@ -53,8 +53,7 @@ class GA_Google_Analytics extends Integration {
 	 * @param string $hook_name Hook name.
 	 */
 	private function wrap_action( $hook_name ) {
-		if ( has_action( $hook_name, self::TRACKING_CODE_CALLBACK ) ) {
-			remove_action( $hook_name, self::TRACKING_CODE_CALLBACK );
+		if ( remove_action( $hook_name, self::TRACKING_CODE_CALLBACK ) ) {
 			add_action(
 				$hook_name,
 				fn() => \Orejime\print_purpose_code(

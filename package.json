@@ -14,12 +14,12 @@
     "format-js": "wp-scripts format ./src",
     "format-php": "npm run composer format",
     "test": "npm run test-php",
-    "test-php": "wp-env run tests-cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin ./vendor/bin/phpunit",
+    "test-php": "wp-env run cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin ./vendor/bin/phpunit",
     "composer": "wp-env run cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin composer"
   },
   "devDependencies": {
-    "@wordpress/env": "^10.20.0",
-    "@wordpress/icons": "^11.1.0",
-    "@wordpress/scripts": "^30.27.0"
+    "@wordpress/env": "^11.3.0",
+    "@wordpress/icons": "^12.1.0",
+    "@wordpress/scripts": "^31.8.0"
   }
 }

@@ -15,7 +15,8 @@ const CONTEXTUAL_CONSENT_SETTING = 'orejime_contextual_consent';
  * @return boolean
  */
 function is_contextual_consent_enabled() {
-	return ( '1' === get_option( CONTEXTUAL_CONSENT_SETTING ) );
+	$is_enabled = ( '1' === get_option( CONTEXTUAL_CONSENT_SETTING ) );
+	return apply_filters( 'orejime_is_contextual_consent_enabled', $is_enabled );
 }
 
 /**

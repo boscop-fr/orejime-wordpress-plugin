@@ -1,3 +1,12 @@
 {
-    "plugins": ["."]
+  "testsEnvironment": false,
+  "plugins": [
+    ".",
+    "https://downloads.wordpress.org/plugin/ga-google-analytics.zip",
+    "https://downloads.wordpress.org/plugin/google-analytics-for-wordpress.zip",
+    "https://downloads.wordpress.org/plugin/google-site-kit.zip",
+    "https://downloads.wordpress.org/plugin/jetpack.zip",
+    "https://downloads.wordpress.org/plugin/matomo.zip",
+    "https://downloads.wordpress.org/plugin/plugin-check.zip"
+  ]
 }

@@ -30,7 +30,12 @@ require_once "{$_tests_dir}/includes/functions.php";
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require dirname( __DIR__ ) . '/orejime.php';
+	require_once dirname( __DIR__ ) . '/orejime.php';
+	require_once dirname( dirname( __DIR__ ) ) . '/ga-google-analytics/ga-google-analytics.php';
+	require_once dirname( dirname( __DIR__ ) ) . '/google-analytics-for-wordpress/googleanalytics.php';
+	require_once dirname( dirname( __DIR__ ) ) . '/google-site-kit/google-site-kit.php';
+	require_once dirname( dirname( __DIR__ ) ) . '/jetpack/jetpack.php';
+	require_once dirname( dirname( __DIR__ ) ) . '/matomo/matomo.php';
 }
 
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
