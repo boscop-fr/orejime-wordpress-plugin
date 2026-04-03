@@ -9,6 +9,7 @@ import {
 	ProgressBar,
 	ToolbarGroup,
 	ToolbarDropdownMenu,
+	Placeholder,
 } from '@wordpress/components';
 import { useEntityRecords } from '@wordpress/core-data';
 import { __ } from '@wordpress/i18n';
@@ -23,7 +24,9 @@ export default function ContextualConsentEdit( { attributes, setAttributes } ) {
 
 	return (
 		<div { ...useBlockProps() }>
-			<InnerBlocks />
+			<Placeholder label={ __( 'Contextual consent', 'orejime' ) }>
+				<InnerBlocks />
+			</Placeholder>
 
 			<BlockControls>
 				<ToolbarGroup>

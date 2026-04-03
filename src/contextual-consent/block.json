@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "orejime/contextual-consent",
 	"title": "Contextual consent",
-	"category": "widget",
+	"category": "embeds",
 	"icon": "shield-alt",
 	"description": "Hides content until the user gives consent",
 	"keywords": [ "gdpr", "consent", "purpose", "guard" ],
