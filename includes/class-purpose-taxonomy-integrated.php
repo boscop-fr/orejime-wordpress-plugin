@@ -10,6 +10,10 @@ namespace Orejime;
 use Exception;
 use WP_Term;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Custom taxonomy for purposes with support for integrations.
  */

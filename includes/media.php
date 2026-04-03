@@ -7,6 +7,10 @@
 
 namespace Orejime;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 const CONTEXTUAL_CONSENT_SETTING = 'orejime_contextual_consent';
 
 /**
@@ -23,25 +27,20 @@ function is_contextual_consent_enabled() {
  *  Renders the input for the contextual consent setting.
  */
 function contextual_consent_setting() {
-	$name    = CONTEXTUAL_CONSENT_SETTING;
-	$checked = checked( 1, get_option( $name ), false );
-	$html    = <<<HTML
-		<label for="$name">
+	?>
+		<label for="orejime-contextual-consent">
 			<input
-				id="$name"
-				name="$name"
+				id="orejime-contextual-consent"
+				name="<?php echo esc_attr( CONTEXTUAL_CONSENT_SETTING ); ?>"
 				type="checkbox"
 				value="1"
 				class="code"
-				$checked
+				<?php checked( '1', get_option( CONTEXTUAL_CONSENT_SETTING ) ); ?>
 			/>
 
-			Provide contextual consent for embeds
+			<?php esc_html_e( 'Provide contextual consent for embeds', 'orejime' ); ?>
 		</label>
-	HTML;
-
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo $html;
+	<?php
 }
 
 /**
@@ -63,7 +62,13 @@ function register_media_settings() {
 		'orejime_media'
 	);
 
-	register_setting( 'media', CONTEXTUAL_CONSENT_SETTING );
+	register_setting(
+		'media',
+		CONTEXTUAL_CONSENT_SETTING,
+		array(
+			'type' => 'boolean',
+		)
+	);
 }
 
 add_action( 'admin_init', __NAMESPACE__ . '\register_media_settings' );

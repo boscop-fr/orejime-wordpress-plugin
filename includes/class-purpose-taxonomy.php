@@ -10,6 +10,10 @@ namespace Orejime;
 use SplObjectStorage;
 use WP_Term;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Registers and manages a custom taxonomy to edit purposes.
  */
@@ -109,17 +113,14 @@ class Purpose_Taxonomy {
 	 * Hides the slug field as it is not relevant for purposes.
 	 */
 	private function hide_term_slug_field() {
-		$html = <<<'HTML'
+		?>
 			<style>
 				.term-slug-wrap,
 				.inline-edit-wrapper label:has(input[name="slug"]) {
 					display: none;
 				}
 			</style>
-		HTML;
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $html;
+		<?php
 	}
 
 	/**
@@ -128,33 +129,7 @@ class Purpose_Taxonomy {
 	 * @param string $taxonomy_slug Taxonomy slug.
 	 */
 	private function add_term_form_fields( $taxonomy_slug ) {
-		$taxonomy    = get_taxonomy( $taxonomy_slug );
-		$name        = self::COOKIES_FIELD;
-		$label       = __( 'Cookies', 'orejime' );
-		$description = $taxonomy->labels->orejime_cookies_field_description;
-
-		$html = <<<HTML
-			<div class="form-field term-cookies-wrap">
-				<label for="tag-cookies">$label</label>
-
-				<input
-					name="$name"
-					id="tag-cookies"
-					type="text"
-					value=""
-					aria-describedby="cookies-description"
-				/>
-
-				<p id="cookies-description">
-					$description
-				</p>
-			</div>
-		HTML;
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $html;
-
-		wp_nonce_field( self::NONCE_ACTION, self::NONCE_NAME );
+		$this->print_meta_fields( $taxonomy_slug );
 	}
 
 	/**
@@ -164,36 +139,42 @@ class Purpose_Taxonomy {
 	 * @param string  $taxonomy_slug Taxonomy slug.
 	 */
 	private function edit_term_form_fields( WP_Term $term, $taxonomy_slug ) {
-		$taxonomy    = get_taxonomy( $taxonomy_slug );
-		$name        = self::COOKIES_FIELD;
-		$value       = esc_attr( get_term_meta( $term->term_id, self::COOKIES_FIELD, true ) );
-		$label       = __( 'Cookies', 'orejime' );
-		$description = $taxonomy->labels->orejime_cookies_field_description;
+		$value = esc_attr( get_term_meta( $term->term_id, self::COOKIES_FIELD, true ) );
+		$this->print_meta_fields( $taxonomy_slug, $value );
+	}
 
-		$html = <<<HTML
+	/**
+	 * Prints form fields for term metas.
+	 *
+	 * @param string $taxonomy_slug Taxonomy slug.
+	 * @param string $value Value.
+	 */
+	private function print_meta_fields( $taxonomy_slug, $value = '' ) {
+		$taxonomy = get_taxonomy( $taxonomy_slug );
+
+		?>
 			<tr class="form-field term-cookies-wrap">
 				<th scope="row">
-					<label for="cookies">$label</label>
+					<label for="orejime-cookies">
+						<?php esc_html_e( 'Cookies', 'orejime' ); ?>
+					</label>
 				</th>
 
 				<td>
 					<input
-						name="$name"
-						id="cookies"
+						name="<?php echo esc_attr( self::COOKIES_FIELD ); ?>"
+						id="orejime-cookies"
 						type="text"
-						value="$value"
-						aria-describedby="cookies-description"
+						value="<?php echo esc_attr( $value ); ?>"
+						aria-describedby="orejime-cookies-description"
 					/>
 
-					<p class="description" id="cookies-description">
-						$description
+					<p class="description" id="orejime-cookies-description">
+						<?php echo esc_html( $taxonomy->labels->orejime_cookies_field_description ); ?>
 					</p>
 				</td>
 			</tr>
-		HTML;
-
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $html;
+		<?php
 
 		wp_nonce_field( self::NONCE_ACTION, self::NONCE_NAME );
 	}

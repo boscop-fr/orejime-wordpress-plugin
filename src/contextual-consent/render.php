@@ -5,12 +5,16 @@
  * @package Orejime
  */
 
-$purpose_id      = $attributes['purposeId'] ?? null;
-$purpose_term    = get_term( $purpose_id );
-$term_exists     = $purpose_term && ! is_wp_error( $purpose_term );
-$wrapped_content = $term_exists && ! empty( $content )
-	? \Orejime\wrap_purpose_code( $content, $purpose_term->term_id, true )
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+$orejime_purpose_id      = $attributes['purposeId'] ?? null;
+$orejime_purpose_term    = get_term( $orejime_purpose_id );
+$orejime_term_exists     = $orejime_purpose_term && ! is_wp_error( $orejime_purpose_term );
+$orejime_wrapped_content = $orejime_term_exists && ! empty( $content )
+	? \Orejime\wrap_purpose_code( $content, $orejime_purpose_term->term_id, true )
 	: $content;
 
 // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-echo $wrapped_content;
+echo $orejime_wrapped_content;

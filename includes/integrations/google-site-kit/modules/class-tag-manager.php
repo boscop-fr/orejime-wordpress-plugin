@@ -9,6 +9,10 @@ namespace Orejime\Integration\Google_Site_Kit\Module;
 
 use Orejime\Integration\Google_Site_Kit\Module;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Google Site Kit Tag Manager integration.
  */

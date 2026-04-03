@@ -2,8 +2,10 @@
 /**
  * Plugin Name: Orejime
  * Description: Lighweight and accessible consent manager.
+ * Version: 0.1.0
  * Author: Boscop
  * Author URI: https://boscop.fr
+ * License: GPLv3
  * Text Domain: orejime
  *
  * @package Orejime

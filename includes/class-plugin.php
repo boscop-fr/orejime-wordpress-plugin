@@ -7,6 +7,10 @@
 
 namespace Orejime;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The main entry point of the plugin.
  */

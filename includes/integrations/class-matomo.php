@@ -11,6 +11,10 @@ use Orejime\Hookable;
 use Orejime\Integration;
 use WpMatomo;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Matomo integration.
  */

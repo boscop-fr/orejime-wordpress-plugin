@@ -11,6 +11,10 @@ use Google\Site_Kit\Core\Tags\GTag;
 use Orejime\Hookable;
 use Orejime\Integration\Google_Site_Kit\Module;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Google Site Kit Analytics integration.
  */

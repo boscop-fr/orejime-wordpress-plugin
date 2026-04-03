@@ -1,0 +1,6 @@
+phpunit.xml.dist
+/.*
+/node_modules
+/src
+/tests
+/vendor

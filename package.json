@@ -1,15 +1,14 @@
 {
   "name": "@boscop/orejime-wordpress-plugin",
-  "version": "0.1.0",
-  "license": "MIT",
   "private": true,
   "scripts": {
     "up": "wp-env start",
     "start": "wp-scripts start --blocks-manifest",
     "build": "wp-scripts build --blocks-manifest",
-    "lint": "npm run lint-js && npm run lint-php",
+    "lint": "npm run lint-js && npm run lint-php && npm run lint-plugin",
     "lint-js": "wp-scripts lint-js ./src",
     "lint-php": "npm run composer lint",
+    "lint-plugin": "wp-env run cli wp plugin check wp-content/plugins/orejime-wordpress-plugin --require=./wp-content/plugins/plugin-check/cli.php --require=./wp-content/plugins/orejime-wordpress-plugin/tests/pcp.php --slug=orejime",
     "format": "npm run format-js && npm run format-php",
     "format-js": "wp-scripts format ./src",
     "format-php": "npm run composer format",

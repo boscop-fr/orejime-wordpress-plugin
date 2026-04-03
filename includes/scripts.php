@@ -7,6 +7,10 @@
 
 namespace Orejime;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Builds the opening tag of a wrapper template.
  *

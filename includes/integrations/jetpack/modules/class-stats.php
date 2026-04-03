@@ -10,6 +10,10 @@ namespace Orejime\Integration\Jetpack\Module;
 use Orejime\Integration\Jetpack\Module;
 use Orejime\Hookable;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Jetpack Stats integration.
  */

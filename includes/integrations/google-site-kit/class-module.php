@@ -10,6 +10,10 @@ namespace Orejime\Integration\Google_Site_Kit;
 use Orejime\Hookable;
 use Orejime\Integration;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Google Site Kit integration.
  */
@@ -41,6 +45,7 @@ abstract class Module extends Integration {
 	 */
 	public function is_active() {
 		return apply_filters(
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 			'googlesitekit_is_module_connected',
 			false,
 			$this->slug

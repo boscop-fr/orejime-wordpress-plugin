@@ -10,6 +10,10 @@ namespace Orejime\Integration;
 use Orejime\Hookable;
 use Orejime\Integration;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Embed blocks integration.
  */
