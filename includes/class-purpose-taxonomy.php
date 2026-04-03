@@ -260,7 +260,7 @@ class Purpose_Taxonomy {
 		$root_purposes = array();
 
 		foreach ( $purposes_by_id as $purpose ) {
-			if ( $child_purposes->contains( $purpose ) ) {
+			if ( $child_purposes->offsetExists( $purpose ) ) {
 				$parent_id = $child_purposes->offsetGet( $purpose );
 
 				if ( ! isset( $purposes_by_id[ $parent_id ] ) ) {

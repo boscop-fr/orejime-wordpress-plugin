@@ -19,11 +19,9 @@ class Tests_GA_Google_Analytics extends WP_UnitTestCase {
 	 * Tests if script tags are properly wrapped.
 	 */
 	public function test_wrap_scripts() {
-		$purpose_id  = random_int( 1000, 2000 );
-		$ga_id       = "G-OREJIME-$purpose_id";
-		$integration = new GA_Google_Analytics( 'test', 'Test' );
+		$integration = new GA_Google_Analytics( 'ga-google-analytics', 'GA Google Analytics' );
 		$integration->register();
-		$integration->set_purpose( $purpose_id );
+		$ga_id = "G-OREJIME-$integration->id";
 
 		add_filter(
 			'ga_google_analytics_options_array',
@@ -42,7 +40,7 @@ class Tests_GA_Google_Analytics extends WP_UnitTestCase {
 		$head = ob_get_clean();
 
 		$this->assertStringContainsString(
-			wrap_purpose_code( $code, $purpose_id ),
+			wrap_purpose_code( $code, $integration->id ),
 			$head
 		);
 	}

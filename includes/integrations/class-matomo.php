@@ -54,6 +54,6 @@ class Matomo extends Integration {
 	 * @param string $script HTML.
 	 */
 	private function wrap_script( $script ) {
-		return \Orejime\wrap_purpose_code( $script, $this->purpose_id );
+		return \Orejime\wrap_purpose_code( $script, $this->id );
 	}
 }

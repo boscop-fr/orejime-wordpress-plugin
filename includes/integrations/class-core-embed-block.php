@@ -47,6 +47,6 @@ class Core_Embed_Block extends Integration {
 			return $content;
 		}
 
-		return \Orejime\wrap_purpose_code( $content, $this->purpose_id, true );
+		return \Orejime\wrap_purpose_code( $content, $this->id, true );
 	}
 }

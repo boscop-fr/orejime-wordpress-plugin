@@ -52,7 +52,7 @@ class Tag_Manager extends Module {
 				$callback['action'],
 				fn() => \Orejime\print_purpose_code(
 					$callback['function'],
-					$this->purpose_id
+					$this->id
 				),
 				$callback['priority'],
 				$callback['accepted_args']

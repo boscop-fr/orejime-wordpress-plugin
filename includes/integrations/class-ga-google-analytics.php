@@ -58,7 +58,7 @@ class GA_Google_Analytics extends Integration {
 				$hook_name,
 				fn() => \Orejime\print_purpose_code(
 					self::TRACKING_CODE_CALLBACK,
-					$this->purpose_id
+					$this->id
 				)
 			);
 		}

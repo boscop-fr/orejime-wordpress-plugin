@@ -19,11 +19,9 @@ class Tests_Core_Embed_Block extends WP_UnitTestCase {
 	 * Tests if embed blocks are properly wrapped.
 	 */
 	public function test_wrap_block() {
-		$purpose_id  = random_int( 1000, 2000 );
 		$embed_code  = '<iframe></iframe>';
-		$integration = new Core_Embed_Block( 'test', 'Test' );
+		$integration = new Core_Embed_Block( 'core-embed-block', 'Embedded content' );
 		$integration->register();
-		$integration->set_purpose( $purpose_id );
 
 		add_filter( 'orejime_is_contextual_consent_enabled', '__return_true' );
 
@@ -37,7 +35,7 @@ class Tests_Core_Embed_Block extends WP_UnitTestCase {
 		);
 
 		$this->assertEquals(
-			wrap_purpose_code( $embed_code, $purpose_id, true ),
+			wrap_purpose_code( $embed_code, $integration->id, true ),
 			$content
 		);
 	}

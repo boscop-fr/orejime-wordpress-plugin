@@ -21,11 +21,9 @@ class Tests_Monster_Insights extends WP_UnitTestCase {
 	 * Tests if script tags are properly wrapped.
 	 */
 	public function test_wrap_scripts() {
-		$purpose_id  = random_int( 1000, 2000 );
-		$ga_id       = "G-OREJIME-$purpose_id";
-		$integration = new Monster_Insights( 'test', 'Test' );
+		$integration = new Monster_Insights( 'monster-insights', 'Monster Insights' );
 		$integration->register();
-		$integration->set_purpose( $purpose_id );
+		$ga_id = 'G-OREJIME-' . strtoupper( $integration->id );
 
 		add_filter( 'monsterinsights_skip_tracking', '__return_false' );
 		add_filter( 'monsterinsights_get_v4_id_to_output', fn () => $ga_id );
@@ -42,7 +40,7 @@ class Tests_Monster_Insights extends WP_UnitTestCase {
 		libxml_use_internal_errors( $use_errors );
 
 		$xpath    = new DOMXPath( $dom );
-		$elements = $xpath->query( "//template[@data-purpose=$purpose_id]" );
+		$elements = $xpath->query( "//template[@data-purpose='$integration->id']" );
 
 		$this->assertEquals( 1, $elements->length );
 		$this->assertStringContainsString(

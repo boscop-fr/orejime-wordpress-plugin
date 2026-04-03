@@ -40,7 +40,7 @@ class Analytics extends Module {
 	public function get_cookie_names() {
 		$cookies = array( '_ga' );
 
-		if ( $this->tag_id ) {
+		if ( ! empty( $this->tag_id ) ) {
 			$cookies[] = '_ga_' . $this->tag_id;
 		}
 
@@ -67,7 +67,7 @@ class Analytics extends Module {
 			class_exists( '\Google\Site_Kit\Core\Tags\GTag' )
 			&& Gtag::HANDLE === $handle
 		) {
-			return \Orejime\wrap_purpose_code( $tag, $this->purpose_id );
+			return \Orejime\wrap_purpose_code( $tag, $this->id );
 		}
 
 		return $tag;

@@ -31,14 +31,6 @@ abstract class Integration {
 	public string $name = 'None';
 
 	/**
-	 * Id of the associated purpose.
-	 *
-	 * @var int
-	 * @readonly
-	 */
-	public int $purpose_id;
-
-	/**
 	 * Initializes the integration.
 	 *
 	 * @param string $id Id.
@@ -47,15 +39,6 @@ abstract class Integration {
 	public function __construct( $id, $name ) {
 		$this->id   = $id;
 		$this->name = $name;
-	}
-
-	/**
-	 * Sets the associated purpose.
-	 *
-	 * @param string $purpose_id Purpose id.
-	 */
-	public function set_purpose( $purpose_id ) {
-		$this->purpose_id = $purpose_id;
 	}
 
 	/**

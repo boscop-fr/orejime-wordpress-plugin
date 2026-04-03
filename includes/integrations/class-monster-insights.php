@@ -44,7 +44,7 @@ class Monster_Insights extends Integration {
 	 */
 	private function open_tracking_code() {
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo \Orejime\purpose_code_wrapper_start( $this->purpose_id );
+		echo \Orejime\purpose_code_wrapper_start( $this->id );
 	}
 
 	/**

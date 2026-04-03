@@ -47,8 +47,7 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 		add_filter( 'manage_edit-' . self::NAME . '_columns', $this->get_callback( 'add_integration_table_column' ) );
 		add_filter( 'manage_' . self::NAME . '_custom_column', $this->get_callback( 'fill_custom_table_column' ), 10, 3 );
 		add_filter( 'user_has_cap', $this->get_callback( 'user_capabilities' ), 10, 4 );
-
-		add_filter( 'get_terms_args', $this->get_callback( 'exclude_inactive_terms' ), 10, 2 );
+		add_filter( 'list_terms_exclusions', $this->get_callback( 'list_terms_exclusions' ), 10, 3 );
 	}
 
 	/**
@@ -60,8 +59,7 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 	private function setup_integrations() {
 		foreach ( $this->integrations->get_all() as $integration ) {
 			try {
-				$id = $this->register_integration_term( $integration );
-				$integration->set_purpose( $id );
+				$this->register_integration_term( $integration );
 			// phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			} catch ( Exception $e ) {
 				// See @todo.
@@ -92,7 +90,7 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 			$integration->name,
 			self::NAME,
 			array(
-				'slug' => $this->term_slug( $integration->id ),
+				'slug' => $this->integration_slug( $integration->id ),
 			)
 		);
 
@@ -113,7 +111,7 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 	private function get_integration_term( Integration $integration ) {
 		$term = get_term_by(
 			'slug',
-			$this->term_slug( $integration->id ),
+			$this->integration_slug( $integration->id ),
 			self::NAME
 		);
 
@@ -133,12 +131,9 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 	private function get_term_integration( $term ) {
 		$term = get_term( $term );
 
-		if ( strpos( $term->slug, self::INTEGRATION_PREFIX ) !== 0 ) {
-			return null;
-		}
-
-		$integration_id = substr( $term->slug, strlen( self::INTEGRATION_PREFIX ) );
-		return $this->integrations->get( $integration_id );
+		return $this->is_integration_slug( $term->slug )
+			? $this->integrations->get( $this->integration_id( $term->slug ) )
+			: null;
 	}
 
 	/**
@@ -147,41 +142,58 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 	 * and integrations in a direct way without using a term
 	 * meta, which would complexify and slow down queries.
 	 *
-	 * @param int $integration_id Integration id.
+	 * @param string $integration_id Integration id.
+	 * @return string Slug.
 	 */
-	private function term_slug( $integration_id ) {
+	private function integration_slug( $integration_id ) {
 		return self::INTEGRATION_PREFIX . $integration_id;
+	}
+
+	/**
+	 * Tells if the given slug references an integration.
+	 *
+	 * @param string $slug Slug.
+	 * @return boolean
+	 */
+	private function is_integration_slug( $slug ) {
+		return strpos( $slug, self::INTEGRATION_PREFIX ) === 0;
+	}
+
+	/**
+	 * Parses an integration id from the given slug.
+	 *
+	 * @param string $slug Slug.
+	 * @return string Integration id.
+	 */
+	private function integration_id( $slug ) {
+		return str_replace( self::INTEGRATION_PREFIX, '', $slug );
 	}
 
 	/**
 	 * Excludes purpose terms associated with inactive
 	 * integrations.
 	 *
-	 * @param array $query Query.
+	 * @param array $exclusions `NOT IN` clause of the query.
+	 * @param array $args Arguments.
 	 * @param array $taxonomies Taxonomies.
-	 * @return array Query.
+	 * @return string Clause.
 	 */
-	private function exclude_inactive_terms( $query, $taxonomies ) {
+	private function list_terms_exclusions( $exclusions, $args, $taxonomies ) {
 		if ( ! in_array( self::NAME, $taxonomies, true ) ) {
-			return $query;
+			return $exclusions;
 		}
 
-		$inactive_ids = array_filter(
-			array_map(
-				fn ( $i ) => $i->purpose_id ?? null,
-				$this->integrations->get_inactive()
-			)
+		$inactive_slugs = array_map(
+			fn ( $i ) => $this->integration_slug( $i->id ),
+			$this->integrations->get_inactive()
 		);
 
-		if ( empty( $inactive_ids ) ) {
-			return $query;
+		if ( empty( $inactive_slugs ) ) {
+			return $exclusions;
 		}
 
-		$query['exclude'] = empty( $query['exclude'] )
-			? $inactive_ids
-			: array_unique( array_merge( $query['exclude'], $inactive_ids ) );
-
-		return $query;
+		$sanitized = array_map( 'sanitize_title', $inactive_slugs );
+		return $exclusions . ' AND t.slug NOT IN ("' . implode( '", "', $sanitized ) . '")';
 	}
 
 	/**
@@ -251,6 +263,7 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 		$integration = $this->get_term_integration( $term );
 
 		if ( $integration ) {
+			$purpose['id']      = $integration->id;
 			$purpose['cookies'] = array_unique(
 				array_merge(
 					$purpose['cookies'],

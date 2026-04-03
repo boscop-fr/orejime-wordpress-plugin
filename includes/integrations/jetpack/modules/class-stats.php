@@ -43,7 +43,7 @@ class Stats extends Module {
 	 */
 	private function wrap_script( $tag, $handle ) {
 		if ( self::SCRIPT_HANDLE === $handle ) {
-			return \Orejime\wrap_purpose_code( $tag, $this->purpose_id );
+			return \Orejime\wrap_purpose_code( $tag, $this->id );
 		}
 
 		return $tag;
