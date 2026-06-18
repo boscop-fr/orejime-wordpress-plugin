@@ -22,6 +22,7 @@ if ( ! defined( 'OREJIME_PLUGIN_FILE' ) ) {
 }
 
 require_once __DIR__ . '/includes/trait-hookable.php';
+require_once __DIR__ . '/includes/class-hooks.php';
 require_once __DIR__ . '/includes/class-plugin.php';
 require_once __DIR__ . '/includes/class-purpose-taxonomy.php';
 require_once __DIR__ . '/includes/class-purpose-taxonomy-integrated.php';

@@ -7,6 +7,7 @@
 
 namespace Orejime\Integration\Google_Site_Kit\Module;
 
+use Orejime\Hooks;
 use Orejime\Integration\Google_Site_Kit\Module;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -74,51 +75,40 @@ class Tag_Manager extends Module {
 	 * @return array Actions.
 	 */
 	private function get_tag_callbacks() {
-		global $wp_filter;
+		$actions = array();
 
-		$actions       = array( 'wp_head', 'wp_body_open', 'wp_footer' );
-		$tag_class     = 'Google\Site_Kit\Modules\Tag_Manager\Web_Tag';
-		$tag_callbacks = array();
+		Hooks::walk_actions(
+			array( 'wp_head', 'wp_body_open', 'wp_footer' ),
+			function ( $action, $priority, $callback, ) use ( &$actions ) {
+				// We're searching for closures, introduced
+				// by Method_Proxy_Trait::get_method_proxy().
+				if ( ! is_object( $callback['function'] ) ) {
+					return;
+				}
 
-		foreach ( $actions as $action ) {
-			if ( ! isset( $wp_filter[ $action ] ) ) {
-				continue;
-			}
+				$accepted_args = $callback['accepted_args'] ?? 1;
 
-			$callbacks = $wp_filter[ $action ]->callbacks;
+				// Functions that render tracking codes
+				// have no parameters. Still, the count
+				// defaults to 1 when unspecified.
+				if ( $accepted_args > 1 ) {
+					return;
+				}
 
-			foreach ( $callbacks as $priority => $prioritized_callbacks ) {
-				foreach ( $prioritized_callbacks as $callback ) {
-					// We're searching for closures, introduced
-					// by Method_Proxy_Trait::get_method_proxy().
-					if ( ! is_object( $callback['function'] ) ) {
-						continue;
-					}
+				$function = new \ReflectionFunction( $callback['function'] );
+				$class    = get_class( $function->getClosureThis() );
 
-					$accepted_args = $callback['accepted_args'] ?? 1;
-
-					// Functions that render tracking codes
-					// have no parameters. Still, the count
-					// defaults to 1 when unspecified.
-					if ( $accepted_args > 1 ) {
-						continue;
-					}
-
-					$function = new \ReflectionFunction( $callback['function'] );
-					$class    = get_class( $function->getClosureThis() );
-
-					if ( $class === $tag_class ) {
-						$tag_callbacks[] = array(
-							'action'        => $action,
-							'function'      => $callback['function'],
-							'priority'      => $priority,
-							'accepted_args' => $accepted_args,
-						);
-					}
+				if ( 'Google\Site_Kit\Modules\Tag_Manager\Web_Tag' === $class ) {
+					$actions[] = array(
+						'action'        => $action,
+						'function'      => $callback['function'],
+						'priority'      => $priority,
+						'accepted_args' => $accepted_args,
+					);
 				}
 			}
-		}
+		);
 
-		return $tag_callbacks;
+		return $actions;
 	}
 }

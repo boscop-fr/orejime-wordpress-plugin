@@ -8,6 +8,7 @@
 namespace Orejime\Integration;
 
 use Orejime\Hookable;
+use Orejime\Hooks;
 use Orejime\Integration;
 use WpMatomo;
 
@@ -26,7 +27,51 @@ class Matomo extends Integration {
 	 * {@inheritDoc}
 	 */
 	public function register() {
-		add_filter( 'matomo_tracking_code_script', $this->get_callback( 'wrap_script' ), 10, 2 );
+		$actions = array();
+
+		Hooks::walk_actions(
+			array( 'wp_head', 'wp_footer' ),
+			function ( $action, $priority, $callback ) use ( &$actions ) {
+				if ( ! is_array( $callback['function'] ) ) {
+					return;
+				}
+
+				list($instance, $method) = $callback['function'];
+
+				if ( 'add_javascript_code' !== $method ) {
+					return;
+				}
+
+				$class = new \ReflectionClass( $instance );
+
+				if ( 'WpMatomo\TrackingCode' === $class->name ) {
+					$actions[] = array(
+						'action'        => $action,
+						'function'      => $callback['function'],
+						'priority'      => $priority,
+						'accepted_args' => $callback['accepted_args'],
+					);
+				}
+			}
+		);
+
+		foreach ( $actions as $action ) {
+			remove_action(
+				$action['action'],
+				$action['function'],
+				$action['priority']
+			);
+
+			add_action(
+				$action['action'],
+				fn() => \Orejime\print_purpose_code(
+					$action['function'],
+					$this->id
+				),
+				$action['priority'],
+				$action['accepted_args']
+			);
+		}
 	}
 
 	/**
@@ -50,14 +95,5 @@ class Matomo extends Integration {
 	 */
 	public function get_cookie_names() {
 		return array();
-	}
-
-	/**
-	 * Wraps the tracking script.
-	 *
-	 * @param string $script HTML.
-	 */
-	private function wrap_script( $script ) {
-		return \Orejime\wrap_purpose_code( $script, $this->id );
 	}
 }

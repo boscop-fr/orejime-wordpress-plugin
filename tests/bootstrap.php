@@ -42,5 +42,24 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 tests_add_filter( 'orejime_register_default_integrations', '__return_false' );
 
+tests_add_filter(
+	'pre_site_option_matomo-site-id-1',
+	function () {
+		return 1;
+	}
+);
+
+tests_add_filter(
+	'pre_option_matomo-global-option',
+	function () {
+		return array(
+			'track_mode'         => 'default',
+			'track_codeposition' => 'head',
+		);
+	}
+);
+
+define( 'MATOMO_DEBUG', false );
+
 // Start up the WP testing environment.
 require "{$_tests_dir}/includes/bootstrap.php";
