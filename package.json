@@ -2,7 +2,7 @@
   "name": "@boscop/orejime-wordpress-plugin",
   "private": true,
   "scripts": {
-    "up": "wp-env start",
+    "up": "wp-env start --update",
     "start": "wp-scripts start --blocks-manifest",
     "build": "wp-scripts build --blocks-manifest",
     "lint": "npm run lint-js && npm run lint-php && npm run lint-plugin",
@@ -17,8 +17,13 @@
     "composer": "wp-env run cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin composer"
   },
   "devDependencies": {
-    "@wordpress/env": "^11.3.0",
-    "@wordpress/icons": "^12.1.0",
-    "@wordpress/scripts": "^31.8.0"
+    "@wordpress/block-editor": "^15.21.1",
+    "@wordpress/blocks": "^15.21.1",
+    "@wordpress/components": "^35.0.1",
+    "@wordpress/core-data": "^7.48.1",
+    "@wordpress/env": "^11.8.1",
+    "@wordpress/i18n": "^6.21.1",
+    "@wordpress/icons": "^14.0.1",
+    "@wordpress/scripts": "^32.4.1"
   }
 }
