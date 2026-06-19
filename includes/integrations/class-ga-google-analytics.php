@@ -10,6 +10,8 @@ namespace Orejime\Integration;
 use Orejime\Hookable;
 use Orejime\Integration;
 
+use function Orejime\list_ga_cookies;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -44,10 +46,7 @@ class GA_Google_Analytics extends Integration {
 	 * {@inheritDoc}
 	 */
 	public function get_cookie_names() {
-		return array(
-			'_ga',
-			'_ga_*',
-		);
+		return list_ga_cookies();
 	}
 
 	/**

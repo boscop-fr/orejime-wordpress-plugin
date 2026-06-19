@@ -11,6 +11,8 @@ use Google\Site_Kit\Core\Tags\GTag;
 use Orejime\Hookable;
 use Orejime\Integration\Google_Site_Kit\Module;
 
+use function Orejime\list_ga_cookies;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -38,17 +40,9 @@ class Analytics extends Module {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * @see https://support.google.com/analytics/answer/11397207
 	 */
 	public function get_cookie_names() {
-		$cookies = array( '_ga' );
-
-		if ( ! empty( $this->tag_id ) ) {
-			$cookies[] = '_ga_' . $this->tag_id;
-		}
-
-		return $cookies;
+		return list_ga_cookies( $this->tag_id );
 	}
 
 	/**

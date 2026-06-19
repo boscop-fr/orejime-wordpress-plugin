@@ -26,6 +26,7 @@ require_once __DIR__ . '/includes/class-hooks.php';
 require_once __DIR__ . '/includes/class-plugin.php';
 require_once __DIR__ . '/includes/class-purpose-taxonomy.php';
 require_once __DIR__ . '/includes/class-purpose-taxonomy-integrated.php';
+require_once __DIR__ . '/includes/cookies.php';
 require_once __DIR__ . '/includes/media.php';
 require_once __DIR__ . '/includes/scripts.php';
 require_once __DIR__ . '/includes/class-integration.php';
