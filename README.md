@@ -58,3 +58,11 @@ They must each have unique identifiers and names, and should provide a way to te
 They hook into their target to alter their output, typically as to modify scripts so they can be handled by Orejime.
 
 For every active integration, Orejime would register an associated purpose, which allows for customizing the info that is shown to the end user.
+
+## Legal disclaimer
+
+Orejime is developed and updated by the Boscop teams in accordance with regulatory developments and European and French recommendations (particularly those of the EDPB and the CNIL).
+
+However, the compliance of a cookie manager largely depends on the solution's configuration (from the handling of each cookie, to color choices, and the information provided to users).
+
+It is your responsibility to verify your site's compliance, and Boscop cannot be held liable for any compliance issues arising from users of the Orejime plugin.
