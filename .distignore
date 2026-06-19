@@ -1,6 +1,7 @@
 phpunit.xml.dist
 /.*
 /node_modules
+/adr
 /src
 /tests
 /vendor
