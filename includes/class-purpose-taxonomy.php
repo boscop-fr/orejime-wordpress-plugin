@@ -31,6 +31,7 @@ class Purpose_Taxonomy {
 	 */
 	public function register() {
 		add_action( 'init', $this->get_callback( 'setup_taxonomy' ) );
+		add_action( 'init', $this->get_callback( 'hide_term_slug_fields' ) );
 
 		// Disables bulk actions.
 		add_filter( 'bulk_actions-edit-' . self::NAME, '__return_empty_array' );
@@ -41,8 +42,6 @@ class Purpose_Taxonomy {
 		add_filter( 'edit_' . self::NAME . '_per_page', fn () => PHP_INT_MAX );
 		add_filter( 'manage_edit-' . self::NAME . '_columns', $this->get_callback( 'hide_table_columns' ) );
 
-		add_action( self::NAME . '_pre_add_form', $this->get_callback( 'hide_term_slug_field' ) );
-		add_action( self::NAME . '_pre_edit_form', $this->get_callback( 'hide_term_slug_field' ) );
 		add_filter( self::NAME . '_add_form_fields', $this->get_callback( 'add_term_form_fields' ) );
 		add_filter( self::NAME . '_edit_form_fields', $this->get_callback( 'edit_term_form_fields' ), 10, 2 );
 		add_action( 'created_' . self::NAME, $this->get_callback( 'save_custom_fields' ) );
@@ -112,15 +111,16 @@ class Purpose_Taxonomy {
 	/**
 	 * Hides the slug field as it is not relevant for purposes.
 	 */
-	private function hide_term_slug_field() {
-		?>
-			<style>
-				.term-slug-wrap,
-				.inline-edit-wrapper label:has(input[name="slug"]) {
-					display: none;
-				}
-			</style>
-		<?php
+	private function hide_term_slug_fields() {
+		$namespace  = 'taxonomy-' . self::NAME;
+		$custom_css = <<<CSS
+			.{$namespace} .term-slug-wrap,
+			.{$namespace} .inline-edit-wrapper label:has(input[name="slug"]) {
+				display: none;
+			}
+		CSS;
+
+		wp_add_inline_style( 'edit', $custom_css );
 	}
 
 	/**
