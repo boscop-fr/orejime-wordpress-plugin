@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'OREJIME_PLUGIN_FILE' ) ) {
-	define( 'OREJIME_PLUGIN_FILE', plugin_basename( __FILE__ ) );
+	define( 'OREJIME_PLUGIN_FILE', __FILE__ );
 }
 
 require_once __DIR__ . '/includes/trait-hookable.php';

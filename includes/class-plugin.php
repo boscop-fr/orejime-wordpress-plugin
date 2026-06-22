@@ -19,10 +19,15 @@ final class Plugin {
 	use Hookable;
 
 	const MENU_SLUG     = 'orejime';
-	const CDN_URL       = 'https://cdn.jsdelivr.net/npm/orejime';
-	const VERSION       = 'latest';
 	const SCRIPT_HANDLE = 'orejime-script';
 	const STYLE_HANDLE  = 'orejime-style';
+
+	/**
+	 * Meta information about the JS library.
+	 *
+	 * @var array{'version': string, 'langs': string[]}
+	 */
+	private array $manifest;
 
 	/**
 	 * Integration registry.
@@ -53,6 +58,7 @@ final class Plugin {
 	 * Initializes the plugin.
 	 */
 	private function __construct() {
+		$this->manifest     = include_once plugin_dir_path( OREJIME_PLUGIN_FILE ) . 'dist/manifest.php';
 		$this->integrations = new Integration_Registry();
 		$this->taxonomy     = new Purpose_Taxonomy_Integrated( $this->integrations );
 		$this->taxonomy->register();
@@ -74,7 +80,7 @@ final class Plugin {
 		add_action( 'wp_enqueue_scripts', $this->get_callback( 'enqueue_scripts' ) );
 		add_action( 'admin_menu', $this->get_callback( 'setup_menu' ) );
 		add_filter(
-			'plugin_action_links_' . OREJIME_PLUGIN_FILE,
+			'plugin_action_links_' . plugin_basename( OREJIME_PLUGIN_FILE ),
 			$this->get_callback( 'setup_action_links' )
 		);
 	}
@@ -177,7 +183,7 @@ final class Plugin {
 			return;
 		}
 
-		$lang   = substr( get_locale(), 0, 2 );
+		$lang   = $this->get_preferred_lang();
 		$config = wp_json_encode(
 			array(
 				'privacyPolicyUrl' => $this->get_privacy_policy_url(),
@@ -187,9 +193,9 @@ final class Plugin {
 
 		wp_enqueue_script(
 			self::SCRIPT_HANDLE,
-			$this->make_cdn_url( "/dist/orejime-standard-$lang.js" ),
+			plugins_url( "dist/orejime-standard-$lang.js", OREJIME_PLUGIN_FILE ),
 			array(),
-			self::VERSION,
+			$this->manifest['version'],
 			array(
 				'in_footer' => false,
 			)
@@ -203,29 +209,30 @@ final class Plugin {
 
 		wp_enqueue_style(
 			self::STYLE_HANDLE,
-			$this->make_cdn_url( '/dist/orejime-standard.css' ),
+			plugins_url( 'dist/orejime-standard.css', OREJIME_PLUGIN_FILE ),
 			array(),
-			self::VERSION
+			$this->manifest['version']
 		);
+	}
+
+	/**
+	 * Finds which language should be used depending on the
+	 * current blog config.
+	 *
+	 * @return string Language code.
+	 */
+	private function get_preferred_lang() {
+		$lang = substr( get_locale(), 0, 2 );
+		return in_array( $lang, $this->manifest['langs'], true ) ? $lang : 'en';
 	}
 
 	/**
 	 * Finds the permalink of the privacy policy page.
 	 *
-	 * @return string
+	 * @return string URL.
 	 */
 	private function get_privacy_policy_url() {
 		return get_page_link( (int) get_option( 'wp_page_for_privacy_policy' ) );
-	}
-
-	/**
-	 * Builds an URL pointing to the given file on Orejime's CDN.
-	 *
-	 * @param string $path Relative file path.
-	 * @return string
-	 */
-	private function make_cdn_url( $path ) {
-		return self::CDN_URL . '@' . self::VERSION . $path;
 	}
 
 	/**

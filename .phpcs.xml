@@ -2,6 +2,7 @@
 
 <ruleset name="Orejime">
     <exclude-pattern type="relative">^build/*</exclude-pattern>
+    <exclude-pattern type="relative">^dist/*</exclude-pattern>
     <exclude-pattern type="relative">^node_modules/*</exclude-pattern>
     <exclude-pattern type="relative">^src/**/*.js</exclude-pattern>
     <exclude-pattern type="relative">^vendor/*</exclude-pattern>

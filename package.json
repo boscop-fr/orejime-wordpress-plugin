@@ -3,14 +3,16 @@
   "private": true,
   "scripts": {
     "up": "wp-env start --update",
-    "start": "wp-scripts start --blocks-manifest",
-    "build": "wp-scripts build --blocks-manifest",
+    "start": "npm run dist && wp-scripts start --blocks-manifest",
+    "build": "npm run dist && wp-scripts build --blocks-manifest",
+    "dist": "node scripts/dist.mjs",
+    "package": "wp-scripts plugin-zip",
     "lint": "npm run lint-js && npm run lint-php && npm run lint-plugin",
-    "lint-js": "wp-scripts lint-js ./src",
+    "lint-js": "wp-scripts lint-js ./src ./scripts/*",
     "lint-php": "npm run composer lint",
     "lint-plugin": "wp-env run cli wp plugin check wp-content/plugins/orejime-wordpress-plugin --require=./wp-content/plugins/plugin-check/cli.php --require=./wp-content/plugins/orejime-wordpress-plugin/tests/pcp.php --slug=orejime",
     "format": "npm run format-js && npm run format-php",
-    "format-js": "wp-scripts format ./src",
+    "format-js": "wp-scripts format ./src ./scripts/*",
     "format-php": "npm run composer format",
     "test": "npm run test-php",
     "test-php": "wp-env run cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin ./vendor/bin/phpunit",
@@ -24,6 +26,7 @@
     "@wordpress/env": "^11.8.1",
     "@wordpress/i18n": "^6.21.1",
     "@wordpress/icons": "^14.0.1",
-    "@wordpress/scripts": "^32.4.1"
+    "@wordpress/scripts": "^32.4.1",
+    "orejime": "^3.1.1"
   }
 }
