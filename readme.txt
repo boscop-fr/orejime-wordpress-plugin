@@ -13,7 +13,9 @@ This plugin integrates Orejime, a lightweight and accessible consent manager, to
 
 == Description ==
 
-
+The plugin provides built-in integrations to core WordPress functionalities and major analytics plugins, as to help implementing a consent banner.
+Major WordPress plugins are automatically discovered and added to the banner.
+One can then fine tune the configuration or even add custom entries.
 
 == Changelog ==
 
