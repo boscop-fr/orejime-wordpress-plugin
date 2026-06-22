@@ -177,9 +177,9 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 	 * Excludes purpose terms associated with inactive
 	 * integrations.
 	 *
-	 * @param array $exclusions `NOT IN` clause of the query.
-	 * @param array $args Arguments.
-	 * @param array $taxonomies Taxonomies.
+	 * @param string $exclusions `NOT IN` clause of the query.
+	 * @param array  $args Arguments.
+	 * @param array  $taxonomies Taxonomies.
 	 * @return string Clause.
 	 */
 	private function list_terms_exclusions( $exclusions, $args, $taxonomies ) {
@@ -187,17 +187,24 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 			return $exclusions;
 		}
 
-		$inactive_slugs = array_map(
-			fn ( $i ) => $this->integration_slug( $i->id ),
-			$this->integrations->get_inactive()
-		);
-
-		if ( empty( $inactive_slugs ) ) {
+		if ( ! empty( $args['slug'] ) ) {
 			return $exclusions;
 		}
 
-		$sanitized = array_map( 'sanitize_title', $inactive_slugs );
-		return $exclusions . ' AND t.slug NOT IN ("' . implode( '", "', $sanitized ) . '")';
+		$active_slugs = array_map(
+			fn ( $i ) => $this->integration_slug( $i->id ),
+			$this->integrations->get_active()
+		);
+
+		$prefix = self::INTEGRATION_PREFIX;
+		$query  = "t.slug NOT LIKE '{$prefix}%'";
+
+		if ( ! empty( $active_slugs ) ) {
+			$sanitized = array_map( 'sanitize_title', $active_slugs );
+			$query     = "($query OR t.slug IN ('" . implode( "', '", $sanitized ) . "'))";
+		}
+
+		return "$exclusions AND $query";
 	}
 
 	/**

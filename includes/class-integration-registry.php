@@ -61,17 +61,6 @@ class Integration_Registry {
 	}
 
 	/**
-	 * Returns all inactive integrations.
-	 *
-	 * @return Integration[] Integrations.
-	 */
-	public function get_inactive() {
-		return array_values(
-			array_filter( $this->integrations, fn ( $i ) => ! $i->is_active() )
-		);
-	}
-
-	/**
 	 * Finds a registered integration by id.
 	 *
 	 * @param string $id Integration id.
