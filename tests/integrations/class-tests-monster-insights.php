@@ -22,7 +22,7 @@ class Tests_Monster_Insights extends WP_UnitTestCase {
 	 */
 	public function test_wrap_scripts() {
 		$integration = new Monster_Insights( 'monster-insights', 'Monster Insights' );
-		$integration->register();
+		$integration->hook_up();
 		$ga_id = 'G-OREJIME-' . strtoupper( $integration->id );
 
 		add_filter( 'monsterinsights_skip_tracking', '__return_false' );

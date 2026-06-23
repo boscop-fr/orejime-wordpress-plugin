@@ -61,7 +61,7 @@ final class Plugin {
 		$this->manifest     = include_once plugin_dir_path( OREJIME_PLUGIN_FILE ) . 'dist/manifest.php';
 		$this->integrations = new Integration_Registry();
 		$this->taxonomy     = new Purpose_Taxonomy_Integrated( $this->integrations );
-		$this->taxonomy->register();
+		$this->taxonomy->hook_up();
 
 		/**
 		 * Tells if the plugin should register its default
@@ -72,8 +72,7 @@ final class Plugin {
 		$register_defaults = apply_filters( 'orejime_register_default_integrations', true );
 
 		if ( $register_defaults ) {
-			add_action( 'plugins_loaded', $this->get_callback( 'register_plugins_loaded_integrations' ), 100 );
-			add_action( 'init', $this->get_callback( 'register_init_integrations' ), 100 );
+			add_action( 'init', $this->get_callback( 'register_integrations' ), 100 );
 		}
 
 		add_action( 'init', $this->get_callback( 'register_blocks' ), 100 );
@@ -117,7 +116,7 @@ final class Plugin {
 	/**
 	 * Registers built-in integrations.
 	 */
-	private function register_plugins_loaded_integrations() {
+	private function register_integrations() {
 		$this->integrations->register(
 			new \Orejime\Integration\Core_Embed_Block(
 				'core-embed-block',
@@ -129,6 +128,20 @@ final class Plugin {
 			new \Orejime\Integration\GA_Google_Analytics(
 				'ga-google-analytics',
 				'GA Google Analytics',
+			),
+		);
+
+		$this->integrations->register(
+			new \Orejime\Integration\Google_Site_Kit\Module\Analytics(
+				'google-site-kit-analytics',
+				'Google Site Kit Analytics',
+			),
+		);
+
+		$this->integrations->register(
+			new \Orejime\Integration\Google_Site_Kit\Module\Tag_Manager(
+				'google-site-kit-tag-manager',
+				'Google Site Kit Tag Manager',
 			),
 		);
 
@@ -150,25 +163,6 @@ final class Plugin {
 			new \Orejime\Integration\Monster_Insights(
 				'monster-insights',
 				'Monster Insights',
-			),
-		);
-	}
-
-	/**
-	 * Registers built-in integrations.
-	 */
-	private function register_init_integrations() {
-		$this->integrations->register(
-			new \Orejime\Integration\Google_Site_Kit\Module\Analytics(
-				'google-site-kit-analytics',
-				'Google Site Kit Analytics',
-			),
-		);
-
-		$this->integrations->register(
-			new \Orejime\Integration\Google_Site_Kit\Module\Tag_Manager(
-				'google-site-kit-tag-manager',
-				'Google Site Kit Tag Manager',
 			),
 		);
 	}

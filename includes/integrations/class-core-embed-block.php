@@ -24,7 +24,7 @@ class Core_Embed_Block extends Integration {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register() {
+	public function hook_up() {
 		add_filter( 'render_block', $this->get_callback( 'wrap_block' ), 10, 2 );
 	}
 

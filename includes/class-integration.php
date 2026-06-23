@@ -44,7 +44,7 @@ abstract class Integration {
 	/**
 	 * Hooks everything up.
 	 */
-	public function register() {}
+	public function hook_up() {}
 
 	/**
 	 * Tells if the integration is currently active.

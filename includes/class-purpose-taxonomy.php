@@ -29,7 +29,7 @@ class Purpose_Taxonomy {
 	/**
 	 * Hooks everything up.
 	 */
-	public function register() {
+	public function hook_up() {
 		add_action( 'init', $this->get_callback( 'setup_taxonomy' ) );
 		add_action( 'init', $this->get_callback( 'hide_term_slug_fields' ) );
 

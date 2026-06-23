@@ -34,7 +34,7 @@ class Integration_Registry {
 		}
 
 		if ( $integration->is_active() ) {
-			$integration->register();
+			$integration->hook_up();
 		}
 
 		$this->integrations[ $integration->id ] = $integration;

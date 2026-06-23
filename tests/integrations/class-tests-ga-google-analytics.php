@@ -20,7 +20,7 @@ class Tests_GA_Google_Analytics extends WP_UnitTestCase {
 	 */
 	public function test_wrap_scripts() {
 		$integration = new GA_Google_Analytics( 'ga-google-analytics', 'GA Google Analytics' );
-		$integration->register();
+		$integration->hook_up();
 		$ga_id = "G-OREJIME-$integration->id";
 
 		add_filter(

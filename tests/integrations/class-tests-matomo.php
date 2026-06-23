@@ -23,7 +23,7 @@ class Tests_Matomo extends WP_UnitTestCase {
 	 */
 	public function test_wrap_scripts() {
 		$integration = new Matomo( 'matomo', 'Matomo' );
-		$integration->register();
+		$integration->hook_up();
 
 		ob_start();
 		wp_head();

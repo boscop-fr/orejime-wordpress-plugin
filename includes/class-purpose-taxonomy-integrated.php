@@ -43,8 +43,8 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 	/**
 	 * Hooks everything up.
 	 */
-	public function register() {
-		parent::register();
+	public function hook_up() {
+		parent::hook_up();
 
 		add_action( 'init', $this->get_callback( 'setup_integrations' ), PHP_INT_MAX );
 

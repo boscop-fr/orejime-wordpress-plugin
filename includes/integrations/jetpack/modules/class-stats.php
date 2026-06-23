@@ -35,7 +35,7 @@ class Stats extends Module {
 	 *
 	 * @todo Handle AMP (Tracking_Pixel::add_amp_pixel()).
 	 */
-	public function register() {
+	public function hook_up() {
 		add_filter( 'script_loader_tag', $this->get_callback( 'wrap_script' ), 10, 2 );
 	}
 

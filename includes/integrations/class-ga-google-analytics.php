@@ -28,7 +28,7 @@ class GA_Google_Analytics extends Integration {
 	/**
 	 * Wraps the original action setup by the plugin.
 	 */
-	public function register() {
+	public function hook_up() {
 		$this->wrap_action( 'admin_head' );
 		$this->wrap_action( 'wp_head' );
 		$this->wrap_action( 'admin_footer' );

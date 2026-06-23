@@ -24,7 +24,7 @@ class Monster_Insights extends Integration {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register() {
+	public function hook_up() {
 		add_filter( 'monsterinsights_tracking_before', $this->get_callback( 'open_tracking_code' ), 10 );
 		add_filter( 'monsterinsights_tracking_after', $this->get_callback( 'close_tracking_code' ), 10 );
 	}

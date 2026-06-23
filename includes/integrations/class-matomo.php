@@ -26,7 +26,7 @@ class Matomo extends Integration {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register() {
+	public function hook_up() {
 		$actions = array();
 
 		Hooks::walk_actions(

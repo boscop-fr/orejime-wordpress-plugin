@@ -32,7 +32,7 @@ abstract class Module extends Integration {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function register() {
+	public function hook_up() {
 		add_action( "googlesitekit_{$this->slug}_init_tag", $this->get_callback( 'init_tag' ), 10, 1 );
 
 		if ( WP_DEBUG ) {

@@ -21,7 +21,7 @@ class Tests_Core_Embed_Block extends WP_UnitTestCase {
 	public function test_wrap_block() {
 		$embed_code  = '<iframe></iframe>';
 		$integration = new Core_Embed_Block( 'core-embed-block', 'Embedded content' );
-		$integration->register();
+		$integration->hook_up();
 
 		add_filter( 'orejime_is_contextual_consent_enabled', '__return_true' );
 
