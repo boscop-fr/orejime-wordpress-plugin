@@ -3,10 +3,10 @@
   "private": true,
   "scripts": {
     "up": "wp-env start --update",
-    "start": "npm run dist && wp-scripts start --blocks-manifest",
-    "build": "npm run dist && wp-scripts build --blocks-manifest",
-    "dist": "node scripts/dist.mjs",
-    "package": "wp-scripts plugin-zip",
+    "start": "npm run package-orejime && wp-scripts start --blocks-manifest",
+    "build": "npm run package-orejime && wp-scripts build --blocks-manifest",
+    "package": "npm run build && wp-scripts plugin-zip",
+    "package-orejime": "node scripts/package-orejime.mjs",
     "lint": "npm run lint-js && npm run lint-php && npm run lint-plugin",
     "lint-js": "wp-scripts lint-js ./src ./scripts/*",
     "lint-php": "npm run composer lint",
@@ -18,6 +18,14 @@
     "test-php": "wp-env run cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin ./vendor/bin/phpunit",
     "composer": "wp-env run cli --env-cwd=wp-content/plugins/orejime-wordpress-plugin composer"
   },
+  "files": [
+    "build",
+    "includes",
+    "public",
+    "LICENSE",
+    "orejime.php",
+    "readme.txt"
+  ],
   "devDependencies": {
     "@wordpress/block-editor": "^15.21.1",
     "@wordpress/blocks": "^15.21.1",

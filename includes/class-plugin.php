@@ -27,7 +27,7 @@ final class Plugin {
 	 *
 	 * @var array{'version': string, 'langs': string[]}
 	 */
-	private array $manifest;
+	private array $orejime_manifest;
 
 	/**
 	 * Integration registry.
@@ -58,9 +58,9 @@ final class Plugin {
 	 * Initializes the plugin.
 	 */
 	private function __construct() {
-		$this->manifest     = include_once plugin_dir_path( OREJIME_PLUGIN_FILE ) . 'dist/manifest.php';
-		$this->integrations = new Integration_Registry();
-		$this->taxonomy     = new Purpose_Taxonomy_Integrated( $this->integrations );
+		$this->orejime_manifest = include_once plugin_dir_path( OREJIME_PLUGIN_FILE ) . 'public/orejime-manifest.php';
+		$this->integrations     = new Integration_Registry();
+		$this->taxonomy         = new Purpose_Taxonomy_Integrated( $this->integrations );
 		$this->taxonomy->hook_up();
 
 		/**
@@ -187,9 +187,9 @@ final class Plugin {
 
 		wp_enqueue_script(
 			self::SCRIPT_HANDLE,
-			plugins_url( "dist/orejime-standard-$lang.js", OREJIME_PLUGIN_FILE ),
+			plugins_url( "public/orejime-standard-$lang.js", OREJIME_PLUGIN_FILE ),
 			array(),
-			$this->manifest['version'],
+			$this->orejime_manifest['version'],
 			array(
 				'in_footer' => false,
 			)
@@ -203,9 +203,9 @@ final class Plugin {
 
 		wp_enqueue_style(
 			self::STYLE_HANDLE,
-			plugins_url( 'dist/orejime-standard.css', OREJIME_PLUGIN_FILE ),
+			plugins_url( 'public/orejime-standard.css', OREJIME_PLUGIN_FILE ),
 			array(),
-			$this->manifest['version']
+			$this->orejime_manifest['version']
 		);
 	}
 
@@ -217,7 +217,7 @@ final class Plugin {
 	 */
 	private function get_preferred_lang() {
 		$lang = substr( get_locale(), 0, 2 );
-		return in_array( $lang, $this->manifest['langs'], true ) ? $lang : 'en';
+		return in_array( $lang, $this->orejime_manifest['langs'], true ) ? $lang : 'en';
 	}
 
 	/**

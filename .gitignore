@@ -1,4 +1,5 @@
+/@boscop
 /build
-/dist
 /node_modules
+/public
 /vendor

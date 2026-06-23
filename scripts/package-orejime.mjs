@@ -3,11 +3,11 @@ import { basename } from 'node:path';
 import pkg from 'orejime/package.json' with { type: 'json' };
 
 const SOURCE = './node_modules/orejime/dist';
-const DEST = './dist';
+const DEST = './public';
 
 // Copies scripts and styles from the orejime module to the
 // plugin folder.
-fs.rmSync( DEST, { recursive: true } );
+fs.rmSync( DEST, { recursive: true, force: true } );
 fs.cpSync( SOURCE, DEST, { recursive: true } );
 
 // Lists available languages.
@@ -24,4 +24,4 @@ return array(
 );
 `;
 
-fs.writeFileSync( DEST + '/manifest.php', manifest );
+fs.writeFileSync( DEST + '/orejime-manifest.php', manifest );
