@@ -66,7 +66,8 @@ function register_media_settings() {
 		'media',
 		CONTEXTUAL_CONSENT_SETTING,
 		array(
-			'type' => 'boolean',
+			'type'              => 'boolean',
+			'sanitize_callback' => fn ( $value ) => '1' === $value ? '1' : '0',
 		)
 	);
 }

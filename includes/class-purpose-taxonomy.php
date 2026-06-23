@@ -112,13 +112,14 @@ class Purpose_Taxonomy {
 	 * Hides the slug field as it is not relevant for purposes.
 	 */
 	private function hide_term_slug_fields() {
-		$namespace  = 'taxonomy-' . self::NAME;
-		$custom_css = <<<CSS
-			.{$namespace} .term-slug-wrap,
-			.{$namespace} .inline-edit-wrapper label:has(input[name="slug"]) {
-				display: none;
-			}
-		CSS;
+		$custom_css = sprintf(
+			'.taxonomy-%s .term-slug-wrap,' . PHP_EOL .
+			'.taxonomy-%s .inline-edit-wrapper label:has(input[name="slug"]) {' . PHP_EOL .
+			'	display: none;' . PHP_EOL .
+			'}',
+			self::NAME,
+			self::NAME,
+		);
 
 		wp_add_inline_style( 'edit', $custom_css );
 	}
