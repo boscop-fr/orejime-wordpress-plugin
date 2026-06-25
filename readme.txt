@@ -93,6 +93,16 @@ For every active integration, Orejime would register an associated purpose, whic
 `npm run lint # lints JS and PHP code`
 `npm run format  # formats JS and PHP code`
 
+= Orejime integration =
+
+The orejime library is provided by the plugin.
+Its source code is [available at GitHub](https://github.com/boscop-fr/orejime).
+Build files are sourced from the [official npm module](https://www.npmjs.com/package/orejime), installed via npm, then copied over to the `public` folder via a build task:
+
+`npm run package-orejime`
+
+This task is run automatically by other build tasks such as `npm start` & `npm run build`.
+
 == Changelog ==
 
 = 0.1.0 =
