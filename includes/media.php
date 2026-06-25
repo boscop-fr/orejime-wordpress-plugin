@@ -67,7 +67,7 @@ function register_media_settings() {
 		CONTEXTUAL_CONSENT_SETTING,
 		array(
 			'type'              => 'boolean',
-			'sanitize_callback' => fn ( $value ) => '1' === $value ? '1' : '0',
+			'sanitize_callback' => 'rest_sanitize_boolean',
 		)
 	);
 }
