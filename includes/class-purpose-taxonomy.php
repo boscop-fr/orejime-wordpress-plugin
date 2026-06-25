@@ -274,13 +274,13 @@ class Purpose_Taxonomy {
 	 * @param WP_Term $term Term.
 	 * @return array Purpose.
 	 */
-	protected function make_purpose_from_term( WP_Term $term ) {
+	public function make_purpose_from_term( WP_Term $term ) {
 		$cookies = wp_parse_list(
 			get_term_meta( $term->term_id, self::COOKIES_FIELD, true )
 		);
 
 		return array(
-			'id'          => $term->term_id,
+			'id'          => $term->slug,
 			'title'       => $term->name,
 			'description' => $term->description,
 			'cookies'     => $cookies,

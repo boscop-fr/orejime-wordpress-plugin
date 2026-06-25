@@ -7,6 +7,8 @@
 
 namespace Orejime;
 
+use WP_Term;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -52,6 +54,18 @@ final class Plugin {
 		if ( ! $instance ) {
 			$instance = new self();
 		}
+
+		return $instance;
+	}
+
+	/**
+	 * Gets the purpose associated with the given term.
+	 *
+	 * @param WP_Term $term Term.
+	 * @return array Purpose.
+	 */
+	public function get_purpose_from_term( WP_Term $term ) {
+		return $this->taxonomy->make_purpose_from_term( $term );
 	}
 
 	/**
@@ -88,29 +102,12 @@ final class Plugin {
 	 * Registers custom blocks.
 	 */
 	private function register_blocks() {
-		$build_path    = dirname( __DIR__ ) . '/build';
-		$manifest_path = "$build_path/blocks-manifest.php";
-
-		if ( function_exists( 'wp_register_block_types_from_metadata_collection' ) ) {
-			wp_register_block_types_from_metadata_collection(
-				$build_path,
-				$manifest_path
-			);
-			return;
-		}
-
-		if ( function_exists( 'wp_register_block_metadata_collection' ) ) {
-			wp_register_block_metadata_collection(
-				$build_path,
-				$manifest_path
-			);
-		}
-
-		$manifest_data = require $manifest_path;
-
-		foreach ( array_keys( $manifest_data ) as $type ) {
-			register_block_type( "$build_path/$type" );
-		}
+		register_block_type_from_metadata(
+			plugin_dir_path( OREJIME_PLUGIN_FILE ) . 'build/contextual-consent',
+			array(
+				'render_callback' => 'Orejime\Block\render_contextual_consent',
+			)
+		);
 	}
 
 	/**

@@ -21,6 +21,7 @@ if ( ! defined( 'OREJIME_PLUGIN_FILE' ) ) {
 	define( 'OREJIME_PLUGIN_FILE', __FILE__ );
 }
 
+require_once __DIR__ . '/includes/blocks/contextual-consent.php';
 require_once __DIR__ . '/includes/trait-hookable.php';
 require_once __DIR__ . '/includes/class-hooks.php';
 require_once __DIR__ . '/includes/class-plugin.php';

@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "up": "wp-env start --update",
-    "start": "npm run package-orejime && wp-scripts start --blocks-manifest",
-    "build": "npm run package-orejime && wp-scripts build --blocks-manifest",
-    "package": "npm run build && wp-scripts plugin-zip",
+    "start": "npm run package-orejime && wp-scripts start",
+    "build": "npm run package-orejime && wp-scripts build",
+    "package": "npm run build && wp-scripts plugin-zip --no-root-folder",
     "package-orejime": "node scripts/package-orejime.mjs",
     "lint": "npm run lint-js && npm run lint-php && npm run lint-plugin",
     "lint-js": "wp-scripts lint-js ./src ./scripts/*",

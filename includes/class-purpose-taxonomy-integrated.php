@@ -269,7 +269,7 @@ class Purpose_Taxonomy_Integrated extends Purpose_Taxonomy {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function make_purpose_from_term( WP_Term $term ) {
+	public function make_purpose_from_term( WP_Term $term ) {
 		$purpose     = parent::make_purpose_from_term( $term );
 		$integration = $this->get_term_integration( $term );
 
