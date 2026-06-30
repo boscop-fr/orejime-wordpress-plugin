@@ -1,0 +1,36 @@
+name: Publication
+run-name: Publishing version ${{ github.ref_name }} to SVN
+
+on:
+  push:
+    tags:
+    branches:
+      - feature-ci-publishing
+
+jobs:
+  publish-tag:
+    name: Publishing tag
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+
+      - run: npm ci
+      - name: Packaging plugin
+        run: npm run package
+
+      - name: Installing SVN
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y subversion
+
+      - name: Checking out repository
+        run: svn co ${{ vars.SVN_REPOSITORY }} svn
+
+      - name: Adding build files
+        run: unzip @boscop/orejime-wordpress-plugin.zip -d svn/tags/${{ github.ref_name }}
+      - run: cd svn
+      - run: svn add trunk/*
+      - run: svn ci -m "Version ${{ github.ref_name }}" --username ${{ secrets.SVN_USER }} --username ${{ secrets.SVN_PASSWORD }}
