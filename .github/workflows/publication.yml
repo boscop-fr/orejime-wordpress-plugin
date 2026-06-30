@@ -34,7 +34,6 @@ jobs:
       - name: Checking out repository
         id: checkout
         wait: [svn]
-        background: true
         run: svn co ${{ vars.SVN_REPOSITORY }} svn
 
       - name: Committing trunk
