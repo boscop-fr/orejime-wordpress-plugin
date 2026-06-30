@@ -17,23 +17,37 @@ jobs:
         with:
           node-version: lts/*
 
-      - run: npm ci
       - name: Packaging plugin
-        run: npm run package
+        background: true
+        run: |
+          npm ci
+          npm run package
 
       - name: Installing SVN
+        background: true
         run: |
           sudo apt-get update
           sudo apt-get install -y subversion
 
       - name: Checking out repository
+        background: true
         run: svn co ${{ vars.SVN_REPOSITORY }} svn
 
-      - name: Adding build files
+      - name: Waiting for jobs to complete
+        wait-all:
+
+      - name: Committing trunk
+        continue-on-error: true
         run: |
-          path="tags/${{ github.ref_name }}"
           cd svn
-          unzip ../@boscop/orejime-wordpress-plugin.zip -d $path
-          svn add "${path}/*"
-          ls
+          rm -Rf trunk
+          unzip ../@boscop/orejime-wordpress-plugin.zip -d trunk
+          svn add trunk/*
+          svn ci -m "Version ${{ github.ref_name }}" --username ${{ secrets.SVN_USER }} --username ${{ secrets.SVN_PASSWORD }}
+
+      - name: Committing tag
+        continue-on-error: true
+        run: |
+          cd svn
+          svn cp trunk "tags/${{ github.ref_name }}"
           svn ci -m "Version ${{ github.ref_name }}" --username ${{ secrets.SVN_USER }} --username ${{ secrets.SVN_PASSWORD }}
