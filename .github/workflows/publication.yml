@@ -1,0 +1,39 @@
+name: Publication
+run-name: Publishing version ${{ github.ref_name }} to SVN
+
+on:
+  push:
+    tags: ['*']
+
+concurrency: svn
+
+jobs:
+  publish:
+    name: Publishing version
+    runs-on: ubuntu-latest
+    environment:
+      name: svn
+      url: https://wordpress.org/plugins/orejime/
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+
+      - name: Checking version
+        run: |
+          grep -q "Version: $GITHUB_REF_NAME$" orejime.php
+
+      - name: Packaging plugin
+        run: |
+          npm ci
+          npm run package
+          unzip @boscop/orejime-wordpress-plugin.zip -d dist
+
+      - name: Publishing to SVN
+        uses: 10up/action-wordpress-plugin-deploy@54bd289b8525fd23a5c365ec369185f2966529c2 # 2.3.0
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USER }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: orejime
+          BUILD_DIR: dist
