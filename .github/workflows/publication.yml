@@ -22,7 +22,7 @@ jobs:
         run: npm run package
 
       - name: Installing SVN
-      - run: |
+        run: |
           sudo apt-get update
           sudo apt-get install -y subversion
 
