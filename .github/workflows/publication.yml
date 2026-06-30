@@ -9,7 +9,7 @@ on:
 
 jobs:
   publish-tag:
-    name: Publishing tag
+    name: Publishing version
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v7
@@ -30,7 +30,10 @@ jobs:
         run: svn co ${{ vars.SVN_REPOSITORY }} svn
 
       - name: Adding build files
-        run: unzip @boscop/orejime-wordpress-plugin.zip -d svn/tags/${{ github.ref_name }}
-      - run: cd svn
-      - run: svn add trunk/*
-      - run: svn ci -m "Version ${{ github.ref_name }}" --username ${{ secrets.SVN_USER }} --username ${{ secrets.SVN_PASSWORD }}
+        run: |
+          path="tags/${{ github.ref_name }}"
+          cd svn
+          unzip ../@boscop/orejime-wordpress-plugin.zip -d $path
+          svn add "${path}/*"
+          ls
+          svn ci -m "Version ${{ github.ref_name }}" --username ${{ secrets.SVN_USER }} --username ${{ secrets.SVN_PASSWORD }}
