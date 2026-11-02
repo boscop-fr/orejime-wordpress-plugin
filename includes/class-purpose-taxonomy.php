@@ -224,15 +224,15 @@ class Purpose_Taxonomy {
 			)
 		);
 
-		$purposes_by_id = array();
-		$child_purposes = new SplObjectStorage();
+		$purposes_by_term_id = array();
+		$child_purposes      = new SplObjectStorage();
 
 		foreach ( $terms as $term ) {
 			// We're using objects to work with references.
 			// This makes it easier to arrange purposes in
 			// a tree.
-			$purpose                        = (object) $this->make_purpose_from_term( $term );
-			$purposes_by_id[ $purpose->id ] = $purpose;
+			$purpose                               = (object) $this->make_purpose_from_term( $term );
+			$purposes_by_term_id[ $term->term_id ] = $purpose;
 
 			if ( $term->parent ) {
 				$child_purposes[ $purpose ] = $term->parent;
@@ -241,11 +241,11 @@ class Purpose_Taxonomy {
 
 		$root_purposes = array();
 
-		foreach ( $purposes_by_id as $purpose ) {
+		foreach ( $purposes_by_term_id as $purpose ) {
 			if ( $child_purposes->offsetExists( $purpose ) ) {
 				$parent_id = $child_purposes->offsetGet( $purpose );
 
-				if ( ! isset( $purposes_by_id[ $parent_id ] ) ) {
+				if ( ! isset( $purposes_by_term_id[ $parent_id ] ) ) {
 					// If the parent doesn't exist, puts the
 					// purpose at the top level so it doesn't
 					// vanish.
@@ -253,7 +253,7 @@ class Purpose_Taxonomy {
 					continue;
 				}
 
-				$parent = $purposes_by_id[ $parent_id ];
+				$parent = $purposes_by_term_id[ $parent_id ];
 
 				if ( ! isset( $parent->purposes ) ) {
 					$parent->purposes = array();
