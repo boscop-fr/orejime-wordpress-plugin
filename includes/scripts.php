@@ -60,3 +60,25 @@ function print_purpose_code( $callback, $purpose, $is_contextual = false ) {
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo purpose_code_wrapper_end();
 }
+
+/**
+ * Keeps wrapper templates when themes or plugins pass
+ * rendered content through kses.
+ *
+ * @param array  $tags Allowed tags.
+ * @param string $context Context.
+ * @return array Allowed tags.
+ */
+function allow_purpose_code_wrapper( $tags, $context ) {
+	if ( 'post' === $context ) {
+		$tags['template'] = array(
+			'data-purpose'     => true,
+			'data-contextual'  => true,
+			'data-title-level' => true,
+		);
+	}
+
+	return $tags;
+}
+
+add_filter( 'wp_kses_allowed_html', __NAMESPACE__ . '\allow_purpose_code_wrapper', 10, 2 );
