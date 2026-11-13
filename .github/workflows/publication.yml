@@ -21,7 +21,8 @@ jobs:
           node-version: lts/*
 
       - name: Checking version
-        run: grep -q "Version: $GITHUB_REF_NAME$" orejime.php
+        run: |
+          grep -q "Version: $GITHUB_REF_NAME$" orejime.php
 
       - name: Packaging plugin
         run: |
